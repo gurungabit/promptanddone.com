@@ -1,0 +1,24 @@
+---
+// promptanddone.com/sleuth: the SLEUTH pack (DM deliverable for the "geo-sleuth-photo-locator" reel).
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Geo Sleuth: find where a photo was taken with your AI agent — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · SLEUTH pack</p>
+      <h1>Geo Sleuth: give your agent a photo, get a camera position.</h1>
+      <p class="tag">Free (MIT) agent skill by Oldcircle. Our test: one Ribblehead Viaduct photo, no metadata, 297 s, pin 104 m from the photographer's recorded spot (one run, not a promise). Use it on public scenes, never on other people's private photos.</p>
+    </header>
+    <section class="card"><h2>1. Install</h2>
+      <pre><code>npx skills add Oldcircle/geo-sleuth</code></pre>
+      <p>Pick your agent when asked (Claude Code, Codex, Cursor...). Needs Python 3.10+, uv, curl and Chrome. Repo: <a href="https://github.com/Oldcircle/geo-sleuth">github.com/Oldcircle/geo-sleuth</a>.</p></section>
+    <section class="card"><h2>2. Check the setup</h2><p>Ask your agent to run <code>doctor.py</code> from the installed skill's <code>scripts/</code> folder and fix any failed check. The first match run downloads about 2.4 GB of models.</p></section>
+    <section class="card"><h2>3. Say one sentence</h2><pre><code>find where this photo was taken</code></pre>
+      <p>Attach the photo. The agent returns coordinates, a heading, an error radius, a confidence and an evidence image. Every claim points at a file.</p></section>
+    <section class="card"><h2>Our test</h2>
+      <img src="/sleuth/ribblehead-input-photo.jpg" alt="Input photo" width="480"> <img src="/sleuth/ribblehead-answer-vs-truth.jpg" alt="Evidence sheet with the true spot marked" width="360">
+      <p>Photo: Kevin Waterhouse, <a href="https://commons.wikimedia.org/wiki/File:Ribblehead_Railway_Viaduct_-_geograph.org.uk_-_7174949.jpg">CC BY-SA 2.0, Geograph via Wikimedia Commons</a>. Answer 54.20914, -2.36524, heading 284, radius 120 m, medium confidence. Recorded position 54.20915904, -2.36364514. Error 103.7 m. Satellite tiles are fetched by the tool.</p>
+      <p>A second run (Tyne Bridge, about 13 m) used reverse image search on third-party sites to name the landmark.</p></section>
+    <section class="card"><h2>Use it responsibly</h2><p>Good for research, journalism practice and checking your own photos. Do not use it to locate private homes or people.</p></section>
+  </main>
+</PackLayout>

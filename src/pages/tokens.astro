@@ -1,0 +1,26 @@
+---
+// promptanddone.com/tokens: the TOKENS pack (DM deliverable for "claude-letter-counting").
+import PackLayout from '../layouts/PackLayout.astro';
+const prompt = String.raw`How many times does the letter e appear in the word "bookkeeper"? First spell the word out letter by letter, then count. End with a final line 'ANSWER: <number>'.`;
+---
+<PackLayout title="The TOKENS pack: the prompt that fixes letter counting — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · TOKENS pack</p>
+      <h1>One line that fixes AI letter counting, and the 320-call test behind it.</h1>
+      <p class="tag">Tested 26 Oct 2026 with Claude Code 2.1.310, single turn, no extended thinking.</p>
+    </header>
+    <section class="card"><h2><span class="n">1</span> The prompt</h2>
+      <pre><code>{prompt}</code></pre>
+      <p>Swap in your own letter and word. The "spell it out first" part is what changes the result.</p></section>
+    <section class="card"><h2><span class="n">2</span> The result</h2>
+      <table><thead><tr><th>Model</th><th>Plain prompt</th><th>Spell it out first</th></tr></thead>
+        <tbody><tr><td>Haiku 5.5</td><td>71 / 80</td><td>80 / 80</td></tr><tr><td>Sonnet 5.5</td><td>59 / 80</td><td>80 / 80</td></tr></tbody></table>
+      <p>40 word and letter pairs, each asked twice. Strawberry and raspberry were right in every plain run; blueberry, bookkeeper, necessary and others were not. Small sample, one prompt wording: not a benchmark.</p></section>
+    <section class="card"><h2><span class="n">3</span> Why</h2>
+      <p>Language models read chunks called tokens, not letters. The chunks shown in the reel (str | aw | berry, book | keeper) come from OpenAI's tiktoken and are illustrative: Anthropic does not publish Claude's tokenizer, and its token-counting API only returns counts.</p>
+      <p><a href="https://platform.claude.com/docs/en/build-with-claude/token-counting">Anthropic token counting docs</a></p></section>
+    <section class="card"><h2><span class="n">4</span> Run it yourself</h2>
+      <p>The test script and the summary table: <a href="/tokens/letter_count_test.py">letter_count_test.py</a> and <a href="/tokens/summary.csv">summary.csv</a>.</p></section>
+  </main>
+</PackLayout>

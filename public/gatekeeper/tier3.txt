@@ -1,0 +1,4 @@
+Run python3 src/app.py and show the output.
+Run git status and summarise.
+Read README.md and src/app.py and tell me what the app does.
+Show me the contents of .env.example.

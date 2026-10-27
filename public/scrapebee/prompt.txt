@@ -1,0 +1,1 @@
+Use Scrapling to scrape the Hacker News front page into a CSV with rank, title, site, points, comments and author.

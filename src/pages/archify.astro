@@ -1,0 +1,26 @@
+---
+// promptanddone.com/archify: the ARCHIFY pack (DM deliverable for the "archify-one-sentence-diagram" reel).
+import PackLayout from '../layouts/PackLayout.astro';
+const install = "# needs Node 18+ and a coding agent (we used Claude Code)\n# in your project folder:\nnpx skills add tt-a1i/archify --skill archify --agent claude-code\n# or for every project and every agent: npx skills add tt-a1i/archify -g";
+const prompt = "Use the archify skill: diagram how ChatGPT answers a question, from my typed prompt to the reply streaming back (tokenizer, model, sampling, safety check, streaming). Write the HTML file in the current directory.";
+const more = "Use Archify to diagram a web request: Browser calls the API, the API checks Redis, on a miss it queries PostgreSQL and fills the cache.\nUse the archify skill: diagram the architecture of a short-video app: upload, transcoding, recommendation feed, CDN, likes.";
+---
+<PackLayout title="One sentence, one interactive diagram: the ARCHIFY pack — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · ARCHIFY pack</p>
+      <h1>Archify: one sentence in, one clickable diagram out</h1>
+      <p class="tag">Archify is a free, Apache-2.0 agent skill by tt-a1i for Claude Code, Codex, Cursor and OpenCode. It writes a self-contained HTML diagram you can click, trace and send. This page has the install line and the exact prompt from the reel (tested 26 Oct 2026 with Claude Sonnet 5.5).</p>
+    </header>
+    <section class="card"><h2><span class="n">1</span> Install</h2>
+      <pre><code>{install}</code></pre>
+      <p>Repo: <a href="https://github.com/tt-a1i/archify">github.com/tt-a1i/archify</a> (89.7K stars on 26 Oct 2026). skills.sh lists 176.9K installs.</p></section>
+    <section class="card"><h2><span class="n">2</span> The prompt from the reel</h2>
+      <pre><code>{prompt}</code></pre>
+      <p>It took 34 s in our run. The result is one HTML file: open it in a browser, use Route to trace a path and click any box.</p></section>
+    <section class="card"><h2><span class="n">3</span> Two more to try</h2>
+      <pre><code>{more}</code></pre></section>
+    <section class="card"><h2><span class="n">4</span> Honest limits</h2>
+      <p>The ChatGPT diagram is a simplified, illustrative picture of the public design, not OpenAI's exact internals (the diagram says so itself). One run per prompt. The skill is free; the model time is paid by your own plan.</p></section>
+  </main>
+</PackLayout>

@@ -1,0 +1,27 @@
+---
+// promptanddone.com/steno: the STENO pack (DM deliverable for the "mlx-whisper-hour-in-a-minute" reel).
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Transcribe an hour of audio in 28 seconds on a Mac: the STENO pack — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · STENO pack</p>
+      <h1>An hour of audio, transcribed locally in 28 seconds.</h1>
+      <p class="tag">OpenAI's Whisper (large-v3-turbo, MIT) running on Apple silicon through the free mlx-whisper package. Tested on an M5 Max with 64 GB, 26 Oct 2026; speed depends on your Mac.</p>
+    </header>
+    <section class="card"><h2>The command</h2>
+      <pre><code>brew install ffmpeg
+pip install mlx-whisper
+mlx_whisper your-audio.mp3 --model mlx-community/whisper-large-v3-turbo --language en --output-format txt</code></pre>
+      <p>The first run downloads the model weights. Or download <a href="/steno/transcribe.sh">transcribe.sh</a>. Docs: <a href="https://github.com/ml-explore/mlx-examples/tree/main/whisper">ml-explore/mlx-examples, whisper</a>.</p></section>
+    <section class="card"><h2>What we measured</h2>
+      <table><thead><tr><th>Test</th><th>Result</th></tr></thead><tbody>
+        <tr><td>Audio</td><td>LibriVox, Alice's Adventures in Wonderland, chapters 1-4, public domain, 60 min 33 s</td></tr>
+        <tr><td>Wall time (whole CLI run)</td><td>28.9 s, 28.3 s, 28.2 s: about 128x real time</td></tr>
+        <tr><td>Word error rate vs the Gutenberg text</td><td>4.2% (some of it is LibriVox announcements and punctuation style)</td></tr>
+        <tr><td>Claude Haiku summary of the transcript</td><td>5.6 s, about $0.007 API-equivalent</td></tr></tbody></table>
+      <p>The full transcript is here: <a href="/steno/alice-ch1-4.txt">alice-ch1-4.txt</a>.</p></section>
+    <section class="card"><h2>Honest limits</h2>
+      <p>One clear English reader. Accents, noise and overlapping speakers raise the error rate. Not tested on other Macs or on non-English audio.</p></section>
+  </main>
+</PackLayout>

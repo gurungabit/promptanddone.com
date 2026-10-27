@@ -1,0 +1,26 @@
+---
+// promptanddone.com/concat: the CONCAT pack (DM deliverable for the "concat-claude-video-editor" reel).
+import PackLayout from '../layouts/PackLayout.astro';
+const claudeAdd = 'claude mcp add concat -- /Applications/Concat.app/Contents/MacOS/concat --mcp';
+const prompt = "Turn /tmp/fs/cc2/work/raw.mp4 into a 9:16 short. Cut the dead air between 3.5 and 8 seconds, speed the build log up 2x, fill the vertical frame, add the title ONE PROMPT. DONE. and short captions, then export it to /tmp/fs/cc2/work/short.mp4.";
+---
+<PackLayout title="Claude edits your video in a free local editor: Concat — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · CONCAT pack</p>
+      <h1>One sentence in, the edit done. Here's the setup and the prompt.</h1>
+      <p class="tag"><a href="https://github.com/jub0t/Concat">Concat</a> is a free, open-source video editor (AGPL-3.0, no watermark, no account, runs locally) with a built-in MCP server, so Claude can cut, speed, title, caption and export. It is in beta. You need Claude Code on a plan.</p>
+    </header>
+    <section class="card"><h2><span class="n">1</span> Install Concat</h2>
+      <p>Download the build for your system from <a href="https://github.com/jub0t/Concat/releases">GitHub Releases</a> (we tested v0.2.8, macOS Apple silicon). If macOS refuses the unsigned app: <code>xattr -dr com.apple.quarantine /Applications/Concat.app</code>.</p></section>
+    <section class="card"><h2><span class="n">2</span> Add it to Claude Code</h2>
+      <pre><code>{claudeAdd}</code></pre>
+      <p>Windows and Linux paths are in <a href="https://github.com/jub0t/Concat/blob/main/docs/MCP.md">docs/MCP.md</a>. To keep it out of your global config, put the same server in a project-local <code>.mcp.json</code> instead. Headless mode needs the folders you use to be under your home folder, or set <code>CONCAT_MCP_ROOTS</code>.</p></section>
+    <section class="card"><h2><span class="n">3</span> The prompt</h2>
+      <pre><code>{prompt}</code></pre>
+      <p>Swap in your own file and times. If you want the frame filled, say so; a wide screen recording is cropped to its centre, so keep the action in the middle third. Captions are text Claude writes from what it sees: Concat's MCP does not transcribe by itself (the app's own auto-captions use a local Whisper model in the editor).</p></section>
+    <section class="card"><h2><span class="n">4</span> What we measured</h2>
+      <p>Tested 26 Oct 2026 with Claude Code 2.1.310 on Sonnet 5.5 and Concat 0.2.8 (headless MCP). Source: our own 16.4 s, 1920x1080 mock screen recording (a fake build terminal with 4.5 s of dead air). One run, 41 s, about $0.23 API-equivalent: imported, split at 3.5 s and 8 s, removed the middle, set the log to 2x, filled a 1080x1920 frame, added a title and three captions, saved and exported a 7.7 s H.264 file with no watermark. The export's very last frame is black.</p>
+      <p class="note">Fair to say: one clip, one run, a beta app. Concat is a community project (AGPL-3.0); we are not affiliated with it. Check frames before you post.</p></section>
+  </main>
+</PackLayout>

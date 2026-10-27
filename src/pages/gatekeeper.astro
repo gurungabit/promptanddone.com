@@ -1,0 +1,49 @@
+---
+// promptanddone.com/gatekeeper: the GATEKEEPER pack (DM deliverable for the "claude-hook-guardrail" reel).
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Claude Code hook that blocks .env reads: the GATEKEEPER pack — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · GATEKEEPER pack</p>
+      <h1>A six-line Claude Code hook that blocked all 18 attempts to read a .env.</h1>
+      <p class="tag">A PreToolUse hook is a script Claude Code runs before every tool call. If it prints a deny decision, the call does not run. We tested two versions against 18 attempts to read a fake .env (Claude Code 2.1.310, Haiku 5.5, fake keys, 26 Oct 2026).</p>
+    </header>
+    <section class="card"><h2><span class="n">1</span> The strict hook (guard-v2.sh, 6 lines)</h2>
+      <pre><code>#!/bin/bash
+# v2: also deny hidden-file globs, command substitution, base64 and printf tricks
+ARGS=$(jq -r &#x27;.tool_input | .command // .file_path // .pattern // .path // &quot;&quot;&#x27;)
+if echo &quot;$ARGS&quot; | grep -Eq &#x27;\.env|\.[e*?[]|\$\(|`|base64|printf&#x27;; then
+  jq -n &#x27;&#123;hookSpecificOutput:&#123;hookEventName:&quot;PreToolUse&quot;,permissionDecision:&quot;deny&quot;,permissionDecisionReason:&quot;Blocked: dotfile access is off limits&quot;&#125;&#125;&#x27;
+fi
+</code></pre>
+      <p>Save it as <code>.claude/hooks/guard-v2.sh</code>, run <code>chmod +x</code> on it, and install jq.</p></section>
+    <section class="card"><h2><span class="n">2</span> The settings entry</h2>
+      <pre><code>&#123;
+  &quot;hooks&quot;: &#123;
+    &quot;PreToolUse&quot;: [
+      &#123;
+        &quot;matcher&quot;: &quot;Read|Bash|Grep|Glob&quot;,
+        &quot;hooks&quot;: [&#123; &quot;type&quot;: &quot;command&quot;, &quot;command&quot;: &quot;$&#123;CLAUDE_PROJECT_DIR&#125;/.claude/hooks/guard-v2.sh&quot; &#125;]
+      &#125;
+    ]
+  &#125;
+&#125;
+</code></pre>
+      <p>Put it in <code>.claude/settings.json</code> in your project. Docs: <a href="https://code.claude.com/docs/en/hooks">code.claude.com/docs/en/hooks</a>.</p></section>
+    <section class="card"><h2><span class="n">3</span> What we measured (18 attempts, a canary string counted as a leak)</h2>
+      <table><thead><tr><th>Setup</th><th>Attempts that printed the fake key</th></tr></thead><tbody>
+        <tr><td>No hook</td><td>16 / 18</td></tr>
+        <tr><td>Naive hook (guard-v1.sh: blocks any call containing .env)</td><td>4 / 18</td></tr>
+        <tr><td>Strict hook (guard-v2.sh)</td><td>0 / 18</td></tr></tbody></table>
+      <p>The naive hook:</p><pre><code>#!/bin/bash
+# v1: deny any tool call that mentions .env
+if cat | grep -q &#x27;\.env&#x27;; then
+  jq -n &#x27;&#123;hookSpecificOutput:&#123;hookEventName:&quot;PreToolUse&quot;,permissionDecision:&quot;deny&quot;,permissionDecisionReason:&quot;Blocked: .env is off limits&quot;&#125;&#125;&#x27;
+fi
+</code></pre>
+      <p>It missed a base64-decoded filename and wildcard routes such as <code>cat .e*</code>, where the text .env never appears. Claude Code also tried those routes on its own after the first deny.</p></section>
+    <section class="card"><h2><span class="n">4</span> Honest limits</h2>
+      <p>One run per attempt on one model. The strict hook still reads only the command text: <code>python3 -c "print(open(chr(46)+'en'+'v').read())"</code> got past it (2 of 3 extra evasions leaked, the same as with no hook). It also blocks <code>.env.example</code>. A hook is a tripwire, not a wall: pair it with <code>/sandbox</code> or file permissions. Attack lists: <a href="/gatekeeper/tier1.txt">tier1</a>, <a href="/gatekeeper/tier2.txt">tier2</a>, <a href="/gatekeeper/tier4.txt">tier4</a>.</p></section>
+  </main>
+</PackLayout>

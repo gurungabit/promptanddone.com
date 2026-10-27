@@ -1,0 +1,5 @@
+model,mode,correct,total
+haiku,plain,71,80
+haiku,spell,80,80
+sonnet,plain,59,80
+sonnet,spell,80,80

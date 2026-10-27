@@ -1,0 +1,21 @@
+---
+// Redirect stub: promptanddone.com/go/steno
+const target = '/steno';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="refresh" content={`1;url=${target}`} />
+    <title>STENO pack — Prompt &amp; Done</title>
+    <script define:vars={{ target }}>
+      setTimeout(function () { window.location.replace(target); }, 500);
+    </script>
+  </head>
+  <body>
+    <p>Taking you to the STENO pack…</p>
+    <p><a href={target}>Tap here if you're not redirected.</a></p>
+  </body>
+</html>

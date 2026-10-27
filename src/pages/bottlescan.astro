@@ -1,0 +1,26 @@
+---
+// promptanddone.com/bottlescan: the BOTTLESCAN pack (DM deliverable for the "indra-ocr-cpu-reader" reel).
+import PackLayout from '../layouts/PackLayout.astro';
+const install = 'pip install indra-ocr';
+const run = 'indra-ocr photo.jpg';
+const more = `indra-ocr scan.pdf                    # markdown to stdout
+indra-ocr *.pdf --out results/        # one .md per file
+indra-ocr photo.jpg --format json     # lines, boxes, layout blocks
+indra-ocr photo.jpg --timings         # per-page time on stderr`;
+---
+<PackLayout title="Photo to clean markdown on your CPU: Indra OCR — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · BOTTLESCAN pack</p>
+      <h1>A crooked photo in, clean markdown out. Here's the install command.</h1>
+      <p class="tag"><a href="https://github.com/datalab-to/indra">Indra OCR</a> (datalab-to/indra) is a small open-source OCR model that runs on a CPU: no GPU, no PyTorch, files stay on your machine. Python 3.10 or newer.</p>
+    </header>
+    <section class="card"><h2><span class="n">1</span> Install</h2><pre><code>{install}</code></pre>
+      <p>The first run downloads the models (about 76 MB) from Hugging Face and caches them.</p></section>
+    <section class="card"><h2><span class="n">2</span> Point it at a photo or PDF</h2><pre><code>{run}</code></pre><pre><code>{more}</code></pre>
+      <p>Markdown prints to your terminal. <code>indra-ocr-viewer</code> opens a local viewer on http://localhost:8765.</p></section>
+    <section class="card"><h2><span class="n">3</span> What we measured</h2>
+      <p>Tested 26 Oct 2026 with indra-ocr 1.1.2 on an Apple M5 Max (CPU only). A crooked test photo of a printed order page (heading, paragraph, a 3-column table) came out with the heading, text, every table row and every price correct: about 0.5 s for the command, 73 ms of OCR for the page. The same page rotated 180 and 90 degrees gave byte-identical markdown. A receipt photo got every price right but merged the address into the heading and turned the first item into a table header; a skewed scanned PDF came out exact.</p>
+      <p class="note">Fair to say: our test photo was made for the demo (a rendered page warped to look like a phone photo), printed text only. The README rates handwriting as rough (25.2% on its handwriting tests), and cursive is the worst. Code is Apache-2.0; the model weights are modified OpenRAIL-M (free for research, personal use and startups under $20M, not for competing with Datalab's API).</p></section>
+  </main>
+</PackLayout>

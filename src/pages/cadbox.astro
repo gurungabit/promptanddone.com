@@ -1,0 +1,30 @@
+---
+// promptanddone.com/cadbox: the CADBOX pack (DM deliverable for the "text-to-cad-3d-print" reel).
+import PackLayout from '../layouts/PackLayout.astro';
+const install = `claude plugin marketplace add earthtojake/text-to-cad#latest
+claude plugin install text-to-cad@earthtojake`;
+const prompt = 'Design a 3D-printable hinged storage box for earbuds: outer 70 x 50 x 28 mm, 2 mm walls, a lid attached by a print-in-place pin hinge along the back edge (0.4 mm clearance), a snap-fit latch at the front, rounded 3 mm corners, and two internal compartments. Export STEP and STL, check it is a valid solid, and render a snapshot. Keep all dimensions as named parameters in the source.';
+const edit = 'Edit the same box: make it 20% taller and add a thumb notch on the front edge of the lid.';
+---
+<PackLayout title="text-to-CAD for Claude Code: the CADBOX install and prompt — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · CADBOX pack</p>
+      <h1>Claude designs a printable part. Here's the install command and the prompt.</h1>
+      <p class="tag"><a href="https://github.com/earthtojake/text-to-cad">text-to-cad</a> is an open-source (MIT) plugin that lets Claude design parts and export STEP and STL files. You need Claude Code and <a href="https://docs.astral.sh/uv/">uv</a>.</p>
+    </header>
+    <section class="card"><h2><span class="n">1</span> Install (Claude Code)</h2>
+      <pre><code>{install}</code></pre>
+      <p>Telemetry is on by default: turn it off with <code>uvx cadgen telemetry off</code>.</p></section>
+    <section class="card"><h2><span class="n">2</span> The prompt from the reel</h2>
+      <pre><code>{prompt}</code></pre>
+      <p>Then ask for a change:</p>
+      <pre><code>{edit}</code></pre></section>
+    <section class="card"><h2><span class="n">3</span> Honest notes</h2>
+      <ul>
+        <li>Tested 26 Oct 2026 with Claude Code 2.1.310 (Sonnet) and text-to-cad 0.7.26. First run 1 min 52 s, the edit 23 s.</li>
+        <li>Our trimesh check found 6 open edges at the hinge in the edited export; Claude found the cause and fixed it, and the final STL and both bodies are watertight.</li>
+        <li>Not test-printed: latch flex and hinge clearance are untested. Tune for your filament and printer.</li>
+      </ul></section>
+  </main>
+</PackLayout>

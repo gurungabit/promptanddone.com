@@ -1,0 +1,25 @@
+---
+// promptanddone.com/diceroll: the DICEROLL pack (DM deliverable for the "claude-random-number" reel).
+import PackLayout from '../layouts/PackLayout.astro';
+const prompt1 = "Pick a random number from 1 to 10. Reply with only the number.";
+const prompt2 = "Write and run a tiny Python script that draws a random whole number from 1 to 10 with the random module. Show the code, then reply with the number on its own last line.";
+const runner = "#!/bin/bash\n# Ask Claude for a \"random\" number N times, each call a fresh session, then print the histogram.\n# usage: ./run_test.sh haiku 20     (needs Claude Code installed; a few cents per 20 calls on haiku)\nM=${1:-haiku}; N=${2:-20}\nfor i in $(seq 1 $N); do\n  claude -p --model $M --no-session-persistence --tools \"\" \"Pick a random number from 1 to 10. Reply with only the number.\"\ndone | sort -n | uniq -c\n";
+---
+<PackLayout title="Claude is not random: the DICEROLL pack (prompts + results) — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · DICEROLL pack</p>
+      <h1>Ask Claude for a random number and it says 7. Ask it to roll the dice and it does.</h1>
+      <p class="tag">We asked Claude for a random number from 1 to 10 in a fresh session every time: Haiku 60 of 60 said 7, Sonnet 60 of 60, Opus 20 of 20 (26 Oct 2026). When we asked Haiku to write and run code that draws the number, 40 runs spread over nine of the ten numbers. Here are the exact prompts, the script and the results.</p>
+    </header>
+    <section class="card"><h2><span class="n">1</span> The prompt that gets 7</h2><pre><code>{prompt1}</code></pre></section>
+    <section class="card"><h2><span class="n">2</span> The fix: make it run code</h2><pre><code>{prompt2}</code></pre>
+      <p>In Claude Code, allow the Bash tool. Claude wrote <code>random.randint(1, 10)</code> every time and ran it.</p></section>
+    <section class="card"><h2><span class="n">3</span> What we measured</h2>
+      <p>Claude Code 2.1.310, one <code>claude -p</code> process per call, no tools for the direct test, default settings. Chi-square against a fair pick (df 9).</p>
+      <table><thead><tr><th>Setup</th><th>Calls</th><th>Counts for 1..10</th><th>p</th></tr></thead><tbody><tr><td>Haiku, asked directly</td><td>60</td><td>0, 0, 0, 0, 0, 0, 60, 0, 0, 0</td><td>1.5e-110</td></tr><tr><td>Sonnet, asked directly</td><td>60</td><td>0, 0, 0, 0, 0, 0, 60, 0, 0, 0</td><td>1.5e-110</td></tr><tr><td>Opus, asked directly</td><td>20</td><td>0, 0, 0, 0, 0, 0, 20, 0, 0, 0</td><td>5.1e-34</td></tr><tr><td>Haiku, asked to write and run code</td><td>40</td><td>8, 3, 6, 0, 6, 4, 4, 6, 1, 2</td><td>0.11</td></tr></tbody></table></section>
+    <section class="card"><h2><span class="n">4</span> Run it yourself</h2><pre><code>{runner}</code></pre></section>
+    <section class="card"><h2><span class="n">5</span> Why, and the limits</h2>
+      <p>A language model writes a likely answer rather than rolling anything, and 7 is the digit people pick most (28% in Kubovy &amp; Psotka, 1976, <em>J. Exp. Psychology: Human Perception and Performance</em>). One prompt wording and one date: other wordings, temperature settings or later model versions may differ, and we did not test other companies' models.</p></section>
+  </main>
+</PackLayout>

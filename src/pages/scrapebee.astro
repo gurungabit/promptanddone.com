@@ -1,0 +1,26 @@
+---
+// promptanddone.com/scrapebee: the SCRAPEBEE setup (DM deliverable for the "scrapling-claude-scraper" reel).
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Scrape a page into a CSV with Claude Code and Scrapling: the SCRAPEBEE setup — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · SCRAPEBEE setup</p>
+      <h1>One sentence to Claude Code, and the Hacker News front page became a CSV.</h1>
+      <p class="tag">Scrapling is a free, open-source (BSD-3-Clause) web-scraping library with an MCP server, so Claude Code can fetch and extract pages for you. Tested 26 Oct 2026 with Scrapling 0.5: one prompt, 30 rows, 6 columns, 21 seconds, all 30 titles, authors and points matching the live page.</p>
+    </header>
+    <section class="card"><h2><span class="n">1</span> Install it in its own folder (nothing global)</h2>
+      <pre><code>python3 -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install "scrapling[ai]"</code></pre>
+      <p>Source and docs: <a href="https://github.com/D4Vinci/Scrapling">github.com/D4Vinci/Scrapling</a>. The browser-based fetchers need an extra <code>scrapling install</code> download; the demo here used the plain HTTP tool and did not need it.</p></section>
+    <section class="card"><h2><span class="n">2</span> Give Claude Code the MCP server (this project only)</h2>
+      <p>Create <code>.mcp.json</code> in your project folder (the file in the download, with your venv path):</p>
+      <pre><code>&#123;"mcpServers":&#123;"scrapling":&#123;"command":"/full/path/to/.venv/bin/scrapling","args":["mcp"]&#125;&#125;&#125;</code></pre>
+      <p>Then start <code>claude</code> in that folder and approve the project MCP server when asked.</p></section>
+    <section class="card"><h2><span class="n">3</span> The prompt, exactly as in the reel</h2>
+      <pre><code>Use Scrapling to scrape the Hacker News front page into a CSV with rank, title, site, points, comments and author.</code></pre>
+      <p>Name Scrapling in the prompt: when we left it out, Claude Code used curl and a script instead. The CSV from our run is in the download (hn_frontpage.csv).</p></section>
+    <section class="card"><h2><span class="n">4</span> Honest limits</h2>
+      <p>One run on one site. Hacker News' robots.txt allows the front page (it asks for a 30-second crawl delay, so fetch it once, not in a loop). Always check a site's robots.txt and terms before scraping, and skip logins and personal data. We did not test anti-bot or Cloudflare-protected pages, so we make no claim about them. Claude typed the values into the CSV itself rather than running a script, so spot-check important data.</p></section>
+  </main>
+</PackLayout>
