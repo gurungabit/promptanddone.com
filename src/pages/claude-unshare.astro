@@ -1,0 +1,34 @@
+---
+// promptanddone.com/claude-unshare: the UNSHARE pack (DM deliverable for the "claude-unshare-chats" reel). /go/unshare redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Unshare your Claude chats in 4 clicks — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · UNSHARE</p>
+      <h1>Unshare every Claude chat you ever shared</h1>
+      <p class="tag">A shared Claude chat is a public link: anyone who has it can open it, no account needed, until you turn it off. Here is where to turn it off.</p>
+      <p class="note">Checked 5 Nov 2026 on Anthropic's help pages. Menus move; the source links are below.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Open your shared chats</h2>
+      <p><strong>Settings → Privacy → Shared chats → Manage.</strong> A "Shared chats" window lists the title, the date shared and the link of every chat you've shared. Available on Free, Pro, Max and Ultra plans.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Click Unshare</h2>
+      <p>Click <strong>Unshare</strong> next to each chat you don't want out there. That revokes access to the last snapshot you shared; once it's off, the link stops working.</p>
+      <p>You can also turn a single chat off from its own Share menu: set it from Public to Private.</p>
+      <p class="label"><a href="https://support.claude.com/en/articles/10593882-share-and-unshare-chats">support.claude.com: Share and unshare chats</a></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">!</span> What about Google?</h2>
+      <p>Over a weekend in late July 2026, shared Claude chats showed up in Google search. Anthropic says every shared chat page carries a "noindex" instruction, which asks search engines not to list it. That doesn't switch your links off: anyone who has a link can still open it until you unshare.</p>
+      <p>Copies already made (screenshots, archives, reposts) are outside Claude's control. Treat a public link as public.</p>
+      <p class="label"><a href="https://support.claude.com/en/articles/16762437-public-links-for-shared-chats">support.claude.com: Public links for shared chats</a> · <a href="https://searchenginejournal.com/indexed-claude-chats-show-why-disallow-is-not-noindex/583852">Search Engine Journal, 27 Jul 2026</a></p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4">Work accounts</h2>
+      <p>On Team and Enterprise plans, chats can only be shared inside your organisation, not publicly.</p>
+    </section>
+  </main>
+</PackLayout>

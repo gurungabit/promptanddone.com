@@ -1,0 +1,35 @@
+---
+// promptanddone.com/cursor-claude-backdoor: the BACKDOOR pack (DM deliverable for the "cursor-claude-extension-backdoor" reel). /go/backdoor redirects here. Prepared, not deployed.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Claude Code in Cursor? The svc-telemetry check — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · BACKDOOR</p>
+      <h1>Poisoned Claude Code extension on Cursor: the exact steps</h1>
+      <p class="tag">On 29 Oct 2026 a tampered copy of the Claude Code extension (2.1.312 and 2.1.313) was on Cursor's extension marketplace from about 2:27am to 1:35pm PT. Cursor says up to 5,000 developers could have received it.</p>
+      <p class="note">Checked 5 Nov 2026 against Cursor's notice and BleepingComputer. Scope: Cursor's marketplace only; Cursor has no evidence that other versions or the official distribution are affected.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Check for the key</h2>
+      <p>macOS / Linux, in a terminal:</p>
+      <pre><code>grep -qs svc-telemetry ~/.ssh/authorized_keys &amp;&amp; echo "svc-telemetry key found" || echo "No key found; machine not impacted"</code></pre>
+      <p>Windows: Cursor publishes a PowerShell check that also looks at the administrator key file.</p>
+      <p class="label"><a href="https://cursor.com/blog/claude-code-extension-security-notice">cursor.com: Claude Code extension security notice</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> If it says found</h2>
+      <p><strong>Isolate the machine, remove the unauthorized key and the persistence, then rotate.</strong> Uninstalling the extension may not be enough: the payload can leave a key, a LaunchAgent (macOS) or a scheduled task / Startup script (Windows) and a tunnel retrying about every minute.</p>
+      <p>Cursor's remediation scripts: <code>bash remediate-macos.sh</code> (run as the affected user, not root) or <code>powershell -ExecutionPolicy Bypass -File .\remediate-windows.ps1</code> (as Administrator), both on the notice page.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Rotate secrets</h2>
+      <p>"Rotate credentials and sessions accessible from affected hosts, from a trusted system." Cursor notes its limited env-var collection does not rule out later credential access over the backdoor.</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4">Good to know</h2>
+      <p>BleepingComputer reports coding errors likely stopped SSH from being enabled on many machines, but the key was still written. Not affected per Cursor's notice: other extensions on the Cursor marketplace.</p>
+      <p class="label"><a href="https://www.bleepingcomputer.com/news/security/malicious-claude-code-extension-on-cursor-planted-ssh-backdoors/">bleepingcomputer.com</a> · Voice: Built with Fish Audio</p>
+    </section>
+  </main>
+</PackLayout>

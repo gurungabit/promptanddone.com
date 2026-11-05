@@ -1,0 +1,42 @@
+---
+// promptanddone.com/claude-mem: the CLAUDEMEM pack (DM deliverable for the "claude-mem-memory" reel). /go/claudemem redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Give Claude Code a memory with claude-mem — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · CLAUDEMEM</p>
+      <h1>claude-mem: Claude Code remembers yesterday</h1>
+      <p class="tag">An open-source plugin that records what Claude does in each session, summarizes it with AI, and loads the relevant context back at the start of your next session.</p>
+      <p class="note">Checked 5 Nov 2026 on the project's README and docs (github.com/thedotmack/claude-mem, docs.claude-mem.ai). Not affiliated with Anthropic.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install (pick one)</h2>
+      <p>Inside Claude Code, two commands:</p>
+      <pre><code>/plugin marketplace add thedotmack/claude-mem
+/plugin install claude-mem</code></pre>
+      <p>Then restart Claude Code. Or from a terminal (Node 20+):</p>
+      <pre><code>npx claude-mem install</code></pre>
+      <p>Use the <code>/plugin</code> commands or <code>npx claude-mem install</code>, not <code>npm install -g claude-mem</code> (that installs only the SDK/library, no hooks).</p>
+      <p class="label"><a href="https://github.com/thedotmack/claude-mem#quick-start">github.com/thedotmack/claude-mem: Quick Start</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> What it does</h2>
+      <p><strong>Captures</strong> every tool call Claude makes (file reads, writes and edits, shell commands, searches). <strong>Summarizes</strong> each one with AI into short observations (what happened, key facts, type such as bugfix or decision, files touched), plus a session summary when Claude finishes: request, what was investigated, learned, completed, next steps. <strong>Loads</strong> context from your recent sessions automatically when a new session starts (the docs say the last 10 sessions).</p>
+      <p>Everything is stored in a local SQLite database, with a web viewer served by the local worker (see the worker URL printed on startup; memory, sessions and settings live at <code>/viewer</code>).</p>
+      <p class="label"><a href="https://docs.claude-mem.ai/usage/getting-started">docs.claude-mem.ai: Getting Started</a></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Ask your past work questions</h2>
+      <p>Claude can search the memory with three MCP tools: <code>search</code> (a compact index, filter by type or date), <code>timeline</code> (what was happening around a result) and <code>get_observations</code> (full details for the IDs you chose). Example from the README: <code>search(query="authentication bug", type="bugfix", limit=10)</code>. Filtering before fetching is what keeps it cheap in tokens.</p>
+      <p class="label"><a href="https://docs.claude-mem.ai/usage/search-tools">docs.claude-mem.ai: Search Tools</a></p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">!</span> The honest bits</h2>
+      <p><strong>It uses a model.</strong> The summarizing step calls an AI. After <code>npx claude-mem install</code> you sign in and get a 30-day free trial of the claude-mem observer; afterwards memory falls back to your Anthropic plan unless you subscribe, or you can point it at your own OpenRouter or Gemini key instead. You can skip the sign-in with an explicit <code>--provider</code> flag.</p>
+      <p><strong>Privacy.</strong> Wrap anything you don't want stored in <code>&lt;private&gt;</code> tags. Settings live in <code>~/.claude-mem/settings.json</code>. Optional cloud sync and screenshot capture are off unless you turn them on.</p>
+      <p><strong>License:</strong> Apache-2.0. Requires Node 20+; Bun and uv are installed automatically if missing. Works with Claude Code and also OpenCode, Codex, Gemini and others through separate installers.</p>
+      <p class="label"><a href="https://github.com/thedotmack/claude-mem">github.com/thedotmack/claude-mem</a></p>
+    </section>
+  </main>
+</PackLayout>

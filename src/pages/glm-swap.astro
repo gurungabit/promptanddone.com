@@ -1,0 +1,31 @@
+---
+// promptanddone.com/glm-swap: the GLMSWAP pack (DM deliverable for the "revolut-glm-coding-costs" reel). /go/glmswap redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Revolut's self-hosted GLM talk and the GLM model page — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · GLMSWAP</p>
+      <h1>Revolut's talk on moving AI coding to a self-hosted open model</h1>
+      <p class="tag">Revolut says it cut its AI coding costs about 90% by moving around 2,000 engineers from metered frontier APIs to GLM, an open-weights model. These are the primary sources, and what the talk does and does not say.</p>
+      <p class="note">Checked 5 Nov 2026. Figures are Revolut's own, from a conference talk; they are not independently audited.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The talk</h2>
+      <p><strong>"How Revolut Cut AI Coding Costs 90% With Self-Hosted Open Models"</strong>, David Abitbol (Ops &amp; Infrastructure Leader, Revolut), AI Engineer New York, uploaded 29 Oct 2026 (about 12 minutes).</p>
+      <p>What he says on the slides: 2,000 engineers served with GLM 5.3 on 56 × B200 GPUs; under 3 s time to first token; $0.30 per million tokens in/out (cache is free), about 1/10th of the cost; predictable invoice, no bill shock; frontier models kept as the exception for tasks where GPT or Claude do best.</p>
+      <p class="label"><a href="https://www.youtube.com/watch?v=Ok6QdZHCcI8">youtube.com: AI Engineer, Revolut talk</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The model: GLM on Hugging Face</h2>
+      <p>The weights are public and not gated. <strong>GLM-5 and GLM-5.1 are MIT-licensed. GLM-5.3 (the version on Revolut's slide) uses Z.AI's own licence</strong>: free to use, modify and sell, with an extra security review only for companies that run a model-as-a-service business above USD 10 billion revenue. Read the LICENSE file before you ship anything.</p>
+      <p class="label"><a href="https://huggingface.co/zai-org/GLM-5.3">huggingface.co/zai-org/GLM-5.3</a> · <a href="https://huggingface.co/zai-org/GLM-5.1">GLM-5.1 (MIT)</a></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Read this before copying the idea</h2>
+      <p>$0.30 per million tokens is Revolut's blended token cost on dedicated hardware. A StartupHub write-up says the talk leaves cloud spend, staffing and observability outside that figure. The speaker also describes a lot of tuning: the same 56 GPUs went from over 10 s to about 1.6 s time to first token between April and August. The slide mentions Together as the GPU provider.</p>
+      <p class="label"><a href="https://www.startuphub.ai/ai-news/artificial-intelligence/2026/revolut-says-self-hosted-ai-cut-coding-costs-90">startuphub.ai: Revolut says self-hosted AI cut coding costs 90%</a></p>
+    </section>
+    <p class="note">The kart race in the video is an illustration. Voice: Built with Fish Audio.</p>
+  </main>
+</PackLayout>

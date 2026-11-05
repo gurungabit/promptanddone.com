@@ -1,0 +1,43 @@
+---
+// promptanddone.com/superpowers: the SUPERCHEF pack (DM deliverable for the "obra-superpowers-skills" reel). /go/superchef redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Superpowers: make Claude Code plan and test before it codes — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · SUPERCHEF</p>
+      <h1>Make Claude Code plan and test before it codes</h1>
+      <p class="tag">Superpowers is a free, MIT-licensed skills framework by Jesse Vincent (obra). It gives your coding agent a workflow: brainstorm, plan, test first, subagents, review.</p>
+      <p class="note">Checked 5 Nov 2026 on the repo README and skills folder (v7.0.2). Tested in Claude Code 2.1.317.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install it in Claude Code</h2>
+      <p>From Anthropic's official plugin marketplace:</p>
+      <pre><code>/plugin install superpowers@claude-plugins-official</code></pre>
+      <p>Or from the author's marketplace:</p>
+      <pre><code>/plugin marketplace add obra/superpowers-marketplace
+/plugin install superpowers@superpowers-marketplace</code></pre>
+      <p>Start a new session after installing. The skills trigger on their own; you don't call them.</p>
+      <p class="label"><a href="https://github.com/obra/superpowers#claude-code">github.com/obra/superpowers: Claude Code install</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The recipe (real skill names)</h2>
+      <p><strong>brainstorming</strong> asks what you actually want before anything is built.</p>
+      <p><strong>writing-plans</strong> breaks the work into bite-sized tasks with exact file paths and verification steps.</p>
+      <p><strong>test-driven-development</strong> enforces red-green-refactor: write a failing test, watch it fail, write minimal code, watch it pass.</p>
+      <p><strong>subagent-driven-development</strong> (or <strong>executing-plans</strong>) hands each task to a fresh subagent, with a review after each.</p>
+      <p><strong>requesting-code-review</strong> checks the work against the plan; <strong>finishing-a-development-branch</strong> wraps up. There is more in the skills folder (systematic-debugging, using-git-worktrees, verification-before-completion).</p>
+      <p class="label"><a href="https://github.com/obra/superpowers#the-basic-workflow">github.com/obra/superpowers: The Basic Workflow</a></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Try the same test</h2>
+      <p>Give it a vague job and watch what happens: <em>"I want to build a small tool that cleans up my messy Downloads folder."</em></p>
+      <p>In our test (5 Nov 2026) it loaded the brainstorming skill and asked what "cleaned up" should mean before writing anything; with the answers in, it wrote an implementation plan; and on a small coding task it wrote the tests and watched them fail before writing the code. Without the plugin, the same vague prompt went straight to code. One run each, so your results will vary.</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4">Good to know</h2>
+      <p>Free and open source (MIT). It runs on your own Claude Code plan, and a longer workflow uses more of it than a one-shot prompt. Install it per agent: the README also covers Codex, Cursor, Gemini CLI, GitHub Copilot CLI, OpenCode and more.</p>
+      <p class="label"><a href="https://github.com/obra/superpowers">github.com/obra/superpowers</a></p>
+    </section>
+  </main>
+</PackLayout>

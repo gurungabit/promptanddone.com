@@ -1,0 +1,37 @@
+---
+// promptanddone.com/postman-plugin-check: the PLUGCHECK pack (DM deliverable for the "postman-auto-installs-ai-plugins" reel). /go/plugcheck redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Did Postman add a plugin to your Claude Code or Codex? How to check — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · PLUGCHECK</p>
+      <h1>Did Postman add itself to your coding agents? The 2-minute check</h1>
+      <p class="tag">One user reported that opening Postman desktop 12.33.4 on a Mac installed Postman plugins into Claude Code and Codex without asking. Postman replied on 5 Nov 2026: "we are reverting this change." Here is how to see whether your machine was touched.</p>
+      <p class="note">Checked 5 Nov 2026. Source: <a href="https://github.com/postmanlabs/postman-app-support/issues/14370">postmanlabs/postman-app-support#14370</a>. The reporter does not claim data theft, and the behaviour was not yet reproduced on a clean Mac.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Claude Code</h2>
+      <p><strong>In your terminal run <code>claude plugin list</code></strong> (or open <code>/plugin</code> in a session and look at the Installed tab). Look for a Postman entry; the reporter's was <code>postman@claude-plugins-official</code>, user scope.</p>
+      <p>It is also recorded in <code>enabledPlugins</code> in <code>~/.claude/settings.json</code>.</p>
+      <p><strong>To remove it:</strong> <code>claude plugin uninstall postman@claude-plugins-official</code> (use the exact name your list shows). To only turn it off: <code>claude plugin disable postman@claude-plugins-official</code>.</p>
+      <p class="label"><a href="https://code.claude.com/docs/en/plugins/install">code.claude.com: Install and manage plugins</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Codex</h2>
+      <p><strong>Open <code>~/.codex/config.toml</code> and search for "postman".</strong> The reporter found <code>[marketplaces.postman]</code>, <code>[plugins."postman@postman"]</code> with <code>enabled = true</code>, and a <code>[hooks.state."postman@postman:hooks/codex-hooks.json:session_start:0:0"]</code> trust record.</p>
+      <p>The plugin's startup hook told the agent to load the <code>postman:api-engineer</code> skill before non-trivial API work. If your Codex keeps announcing Postman skills, that is why.</p>
+      <p class="label"><a href="https://github.com/postmanlabs/postman-app-support/issues/14370">GitHub issue #14370 (reporter's config.toml)</a></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Postman's own removal command</h2>
+      <p>Postman's docs list <code>npx @postman/postman-plugin status</code> (shows which agents have the plugin) and <code>npx @postman/postman-plugin remove</code> (uninstalls it from each detected agent; add <code>--agent &lt;id&gt;</code> to limit it). Read what a command does before you run it.</p>
+      <p>The reporter also found a Postman CLI binary and lib folder in <code>~/.local/bin</code>.</p>
+      <p class="label"><a href="https://learning.postman.com/docs/postman-plugin/install/detected-agents">learning.postman.com: detected agents</a></p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">!</span> What is and is not established</h2>
+      <p>The issue's own log lines show <code>"source":"auto-existing-upgrade"</code> with <code>claude-code:installed, codex:installed</code>, and the installer source attempts to approve its own Codex hook. The reporter explicitly does <em>not</em> claim data exfiltration, and has not reproduced it on a clean Mac. Postman first said the bundling was mentioned on its download page and update flow, then on 5 Nov said it would redesign the experience and, meanwhile, revert the change.</p>
+    </section>
+  </main>
+</PackLayout>
