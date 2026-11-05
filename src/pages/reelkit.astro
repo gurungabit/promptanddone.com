@@ -7,7 +7,7 @@ const claudeMd = "# Channel instructions (fill this in)\n\nClaude Code reads thi
 const setup = "brew install ffmpeg node uv\ncurl -fsSL https://claude.ai/install.sh | bash   # Claude Code; run `claude` once to log in\nunzip reelkit-v1.zip && cd reelkit\nmake setup     # Python env, Node packages, headless Chromium (~1.7 GB)\nmake doctor    # every line should say ok\nmake all       # renders the sample video: example/final.mp4";
 const stack = [["Claude Code", "runs the whole process", "needs a paid Claude plan"], ["Kokoro-82M", "text to speech, runs on CPU", "Apache-2.0"], ["faster-whisper + Whisper small.en", "speech to text for the word check and QA", "MIT"], ["three.js", "the 3D scene", "MIT"], ["Playwright + Chromium", "frame-by-frame rendering", "Apache-2.0 / BSD-style"], ["FFmpeg", "mixing, loudness, encoding", "LGPL/GPL"], ["espeak-ng (bundled)", "pronunciation fallback for Kokoro", "GPL-3.0"], ["Chatterbox (optional)", "clone your own voice", "MIT"], ["Replybeam (optional)", "sends the link to everyone who comments your keyword on Instagram", "free plan; Pro $9/month"], ["The kit itself", "skill, scene, scripts, docs", "MIT"]];
 ---
-<PackLayout title="REELKIT: build your own AI reels with Claude Code — Prompt &amp; Done">
+<PackLayout title="REELKIT: build your own AI reels with Claude Code — Prompt & Done">
   <main>
     <header>
       <p class="kicker"><a href="/">Prompt &amp; Done</a> · REELKIT</p>
