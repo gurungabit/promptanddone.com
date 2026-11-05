@@ -1,0 +1,132 @@
+---
+// promptanddone.com/reelkit: the REELKIT pack (DM deliverable for the "this-reel-made-itself" reel). Prepared, not deployed.
+import PackLayout from '../layouts/PackLayout.astro';
+
+const firstPrompt = "Make one reel about <TOPIC>. Follow CLAUDE.md and the make-reel skill end to end: research and prove demand, test it for real, build the claim table, write the script, voice, ASR gate, build the scene, render, mix, run QA and fix what fails, then package it. Don't stop to ask me unless you are blocked. Look at the contact sheets yourself before you call it done. Do not post anything. When you finish, give me the MP4 path, its duration, the QA result, and anything you could not verify.";
+const claudeMd = "# Channel instructions (fill this in)\n\nClaude Code reads this file at the start of every session in this folder. Replace every `<...>`. Keep it short: rules here apply to every video. The step-by-step production process lives in `.claude/skills/make-reel/SKILL.md`.\n\n## The channel\n\n| | |\n|---|---|\n| Name | `<Channel name>` |\n| Promise (one line) | `<e.g. \"One AI tool a day that saves you an hour. Shown, not told.\">` |\n| Audience | `<who, what they already know, what they want: e.g. \"people who use ChatGPT or Claude at work and want to do more with it\">` |\n| Niche to research | `<topics in scope, e.g. \"AI tools, agents, coding assistants, open-source AI you can run\">` |\n| Out of scope | `<e.g. \"crypto, finance tips, politics, celebrity news\">` |\n| Handles | `<TikTok @...> / <Instagram @...> / <YouTube @...>` |\n| Length | 25-35 s by default (75-95 spoken words) |\n\n## Voice and tone\n\n- `<e.g. \"Calm, confident, a little dry. Talks like a friend showing you something on their laptop.\">`\n- Write for speech: short clauses, contractions, one idea per sentence, concrete examples.\n- Never: \"Hey guys\", \"Welcome back\", \"In today's video\", \"game-changing\", \"revolutionary\", \"insane\".\n- TTS voice: `<Kokoro voice id, e.g. af_heart or am_michael>` (set `voice.kokoro_voice` in each script.json).\n\n## Hook rules\n\n- The first 1-2 seconds show the result or the surprising capability. Never open on a logo, a greeting or the tool's name.\n- Speech starts at 0.0 s. Frame 0 is the most striking image in the video.\n- Proof on screen by about 3 s.\n\n## Call to action\n\n- One CTA, after the payoff, while the scene is still moving.\n- Default: `<\"Comment KEYWORD and I'll send you the link.\" or \"Follow for one AI tool a day.\">`\n- A keyword is short, distinctive and not a common word. Only promise what exists and works.\n\n## Accuracy rules\n\n- Fresh research before every script. Never script from memory.\n- Every claim (names, prices, plans, licences, dates, capabilities, numbers) has a primary source or our own test in the reel's claim table.\n- Never repeat a creator's claim without checking it. Never invent numbers or engagement.\n- Scope claims precisely instead of adding spoken disclaimers. Put prerequisites (paid plan, hardware) in the post caption.\n- Label illustrative scenes. Show the real input and the real output whenever possible.\n- Never clone or imitate a real person's voice without their written consent. Never use a trademarked mascot or logo as a character.\n\n## Quality bar\n\n- 1080x1920, 30 fps, H.264, AAC, -14 LUFS, true peak <= -1.5 dBTP.\n- `make qa` passes, and you looked at the contact sheet and the key frames yourself.\n- Captions: max 4 words, word-synced, nothing overlapping the hero.\n- One continuous 3D world per video, at most two hard cuts, something new every 2-4 s.\n\n## Log of past videos (avoid repeats)\n\n| Date | Slug | Topic | Notes |\n|---|---|---|---|\n| `<yyyy-mm-dd>` | `<slug>` | `<topic>` | `<what worked, what didn't>` |\n\n## Permissions\n\n- **Never post, schedule, upload or send anything without my explicit OK for that specific video.** Deliver the finished file and the package; I watch it and decide.\n- Do not spend money (paid APIs, subscriptions) without asking. `<adjust if you allow a budget, e.g. \"up to $2 of API calls per video\">`\n- Work inside this folder. Don't delete anything outside `reels/<slug>/`.\n";
+const setup = "brew install ffmpeg node uv\ncurl -fsSL https://claude.ai/install.sh | bash   # Claude Code; run `claude` once to log in\nunzip reelkit-v1.zip && cd reelkit\nmake setup     # Python env, Node packages, headless Chromium (~1.7 GB)\nmake doctor    # every line should say ok\nmake all       # renders the sample video: example/final.mp4";
+const stack = [["Claude Code", "runs the whole process", "needs a paid Claude plan"], ["Kokoro-82M", "text to speech, runs on CPU", "Apache-2.0"], ["faster-whisper + Whisper small.en", "speech to text for the word check and QA", "MIT"], ["three.js", "the 3D scene", "MIT"], ["Playwright + Chromium", "frame-by-frame rendering", "Apache-2.0 / BSD-style"], ["FFmpeg", "mixing, loudness, encoding", "LGPL/GPL"], ["espeak-ng (bundled)", "pronunciation fallback for Kokoro", "GPL-3.0"], ["Chatterbox (optional)", "clone your own voice", "MIT"], ["Replybeam (optional)", "sends the link to everyone who comments your keyword on Instagram", "free plan; Pro $9/month"], ["The kit itself", "skill, scene, scripts, docs", "MIT"]];
+---
+<PackLayout title="REELKIT: build your own AI reels with Claude Code — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · REELKIT</p>
+      <h1>The kit to build your own AI reels</h1>
+      <p class="tag">A free, open-source (MIT) starter kit: Claude Code researches and writes the script, a local AI voice reads it, Whisper checks every word, and a 3D scene renders frame by frame into a finished vertical video.</p>
+      <div class="btns">
+        <a class="go" href="/downloads/reelkit-v1.zip" download data-umami-event="reelkit-download">Download reelkit-v1.zip</a>
+      </div>
+      <p class="note">v1, 61 KB. Tested 4 Nov 2026 on an Apple silicon Mac: from a fresh unzip, the 11-second sample video rendered and passed all 16 automated checks in 39 seconds (models already downloaded).</p>
+    </header>
+
+    <section class="card" aria-labelledby="pipe">
+      <h2 id="pipe">The pipeline, in 7 stages</h2>
+      <p>Claude Code follows one skill file (<code>.claude/skills/make-reel/SKILL.md</code>) through every stage. Each stage has a pass/fail gate before the next one starts.</p>
+    </section>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Research</h2>
+      <p>Searches what your audience is watching this week, proves demand with real numbers, ranks 5-8 ideas and picks the strongest.</p>
+      <p class="label">Tool: Claude Code with web search</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Test it and fact-check it</h2>
+      <p>Runs the tool for real and saves the input and output, then builds a claim table where every fact has a primary source.</p>
+      <p class="label">Tool: Claude Code</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Script</h2>
+      <p>One spoken paragraph of 75-95 words: the result in the first 1-2 seconds, then the proof, the payoff and one call to action.</p>
+      <p class="label">Tool: Claude Code + the make-reel skill</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> Voice and word check</h2>
+      <p>A local AI voice reads every line several times. Whisper transcribes each take and keeps only exact word matches, then times every word for the captions.</p>
+      <p class="label">Tool: Kokoro-82M, faster-whisper</p>
+    </section>
+    <section class="card" aria-labelledby="s5">
+      <h2 id="s5"><span class="n">5</span> 3D scene</h2>
+      <p>A three.js world (an original voxel robot on a floating island to start) acts out the script with one smooth camera and word-synced captions. Every frame is a pure function of time, so renders repeat exactly.</p>
+      <p class="label">Tool: three.js</p>
+    </section>
+    <section class="card" aria-labelledby="s6">
+      <h2 id="s6"><span class="n">6</span> Render and mix</h2>
+      <p>Headless Chromium draws all frames at 30 fps; an original music bed and sound effects are ducked under the voice, mixed to -14 LUFS and encoded as a 1080x1920 MP4.</p>
+      <p class="label">Tool: Playwright, FFmpeg</p>
+    </section>
+    <section class="card" aria-labelledby="s7">
+      <h2 id="s7"><span class="n">7</span> QA, then your OK</h2>
+      <p>16 automated checks on the final file (size, codec, loudness, true peak, black or flash frames, hard cuts, and Whisper hearing the script exactly) plus a contact sheet. Then you watch it and decide. The kit never posts.</p>
+      <p class="label">Tool: qa.py (FFmpeg + Whisper), you</p>
+    </section>
+
+    <section class="card" aria-labelledby="pa">
+      <h2 id="pa"><span class="n">A</span> The first prompt</h2>
+      <p class="sub">After setup, open a terminal in the <code>reelkit</code> folder, run <code>claude</code>, and paste this. Replace <code>&lt;TOPIC&gt;</code>. More prompts (research only, revise, a batch run while you sleep) are in <code>PROMPTS.md</code>.</p>
+      <div class="prompt">{firstPrompt}</div>
+      <button class="copy" type="button" data-k="firstPrompt">Copy prompt</button>
+    </section>
+
+    <section class="card" aria-labelledby="pb">
+      <h2 id="pb"><span class="n">B</span> Your channel file: CLAUDE.md</h2>
+      <p class="sub">Claude Code reads this at the start of every session. Fill in the <code>&lt;...&gt;</code> parts once: your channel, voice, hook rules, CTA, accuracy rules, quality bar, and "never post without my OK". It is already in the kit.</p>
+      <pre class="block">{claudeMd}</pre>
+      <button class="copy" type="button" data-k="claudeMd">Copy CLAUDE.md</button>
+    </section>
+
+    <section class="card" aria-labelledby="pc">
+      <h2 id="pc"><span class="n">C</span> Setup on a Mac (about 10 minutes)</h2>
+      <ol>
+        <li>Get Claude Code on a paid Claude plan and log in once.</li>
+        <li>Install FFmpeg, Node 18+ and uv with Homebrew.</li>
+        <li>Unzip the kit and run <code>make setup</code>, then <code>make all</code> to render the sample.</li>
+        <li>Open <code>example/final.mp4</code> and <code>example/qa.json</code>, fill in <code>CLAUDE.md</code>, and paste the first prompt.</li>
+      </ol>
+      <pre class="block">{setup}</pre>
+      <button class="copy" type="button" data-k="setup">Copy commands</button>
+      <p class="note">Needs about 2.5 GB of disk; the first run downloads the voice and Whisper models (about 0.8 GB). Linux and Windows (WSL) steps are in the README; we have only tested on macOS so far.</p>
+    </section>
+
+    <section class="card" aria-labelledby="pd">
+      <h2 id="pd"><span class="n">D</span> The stack and licenses</h2>
+      <div class="table-wrap"><table><thead><tr><th>Part</th><th>Job</th><th>License</th></tr></thead><tbody>{stack.map((r) => <tr><td>{r[0]}</td><td>{r[1]}</td><td>{r[2]}</td></tr>)}</tbody></table></div>
+      <p class="note">The music and sound effects are synthesized from plain math by the kit, so there is nothing to license. Every tool except Claude Code is free and runs on your computer.</p>
+    </section>
+
+    <section class="card" aria-labelledby="pf">
+      <h2 id="pf"><span class="n">F</span> Send the link to everyone who comments</h2>
+      <p>Most reels end with "Comment KEYWORD and I'll send you the link." Sending it by hand doesn't scale. <strong>Replybeam</strong> does it for you on Instagram: when someone comments your keyword, it posts a short public reply and DMs them your link as a button, and tracks the clicks.</p>
+      <ul>
+        <li><strong>Try it free:</strong> free-forever plan, no credit card. 2 running automations and 1,000 DMs a month; Pro ($9/month) removes the limits.</li>
+        <li><strong>The kit's agent asks you</strong> once the video is approved, then writes the exact settings to paste (skill step 12, prompt 6).</li>
+        <li><strong>On Pro, Claude Code can set it up itself</strong> through Replybeam's connector, and still asks before turning it on.</li>
+      </ul>
+      <div class="btns">
+        <a class="go" href="https://replybeam.app/?utm_source=promptanddone&amp;utm_medium=reelkit&amp;utm_campaign=reelkit" target="_blank" rel="noopener" data-umami-event="reelkit-replybeam">Try Replybeam free</a>
+      </div>
+      <p class="note">Disclosure: Replybeam is made by the team behind Prompt &amp; Done.</p>
+    </section>
+
+    <section class="card" aria-labelledby="pe">
+      <h2 id="pe"><span class="n">E</span> Honest notes</h2>
+      <ul>
+        <li><strong>Claude Code needs a paid Claude plan</strong> (Pro, Max or Ultra, a Team or Enterprise seat, or API credits); the free plan does not include it. On 4 Nov 2026, <a href="https://claude.com/pricing" target="_blank" rel="noopener">claude.com/pricing</a> listed Pro at $20 a month billed monthly.</li>
+        <li><strong>Local voice quality varies.</strong> The kit ships with Kokoro-82M, which runs on almost any computer and sounds clear but simpler. The voice in our reel is Fish Audio Drama 3, a much bigger open model (about 47 GB of memory in our setup); the README explains it and the optional Chatterbox voice cloning, which we did not test in this kit. Only clone your own voice, or one you have written permission to use.</li>
+        <li><strong>A human should approve every post.</strong> The automated checks prove the words and the file, not whether it sounds right or says the right thing. The kit never posts; watch each video with sound first.</li>
+        <li><strong>It is a starter, not our whole studio.</strong> It is a smaller, generic version of the pipeline behind our reels, with its own original scene. Expect to grow it with your own worlds and voice.</li>
+      </ul>
+    </section>
+
+    <p class="note">Voice in the reel: Built with Fish Audio.</p>
+  </main>
+</PackLayout>
+
+<script define:vars={{ texts: { firstPrompt, claudeMd, setup } }}>
+  document.querySelectorAll('.copy').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const label = btn.textContent;
+      try { await navigator.clipboard.writeText(texts[btn.dataset.k]); btn.textContent = 'Copied ✓'; }
+      catch { btn.textContent = 'Select and copy manually'; }
+      setTimeout(() => { btn.textContent = label; }, 1800);
+    });
+  });
+</script>

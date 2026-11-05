@@ -509,6 +509,15 @@ export const tools: Tool[] = [
     kind: 'tool',
   },
   {
+    label: 'REELKIT: build your own AI reels',
+    href: 'https://promptanddone.com/go/reelkit/',
+    ariaLabel: 'Get the REELKIT — the free starter kit to make AI-narrated 3D reels with Claude Code',
+    description: 'The free (MIT) starter kit from "This reel made itself": a Claude Code skill, a local AI voice with a Whisper word check, a three.js 3D scene, frame-by-frame rendering and 16 automated QA checks. Tested on a Mac.',
+    external: false,
+    event: 'click-tool-reelkit',
+    kind: 'tool',
+  },
+  {
     label: 'PLAYWRIGHT: Claude fills any web form',
     href: 'https://promptanddone.com/go/playwright/',
     ariaLabel: 'Get the PLAYWRIGHT setup — Claude fills a web form from one pasted email',
