@@ -509,6 +509,15 @@ export const tools: Tool[] = [
     kind: 'tool',
   },
   {
+    label: 'PRIVACY: turn off AI training on your chats',
+    href: 'https://promptanddone.com/go/privacy/',
+    ariaLabel: 'Get the PRIVACY switches — stop ChatGPT, Gemini and Claude training on your chats',
+    description: 'The three off switches (ChatGPT Data controls, Gemini Keep Activity, Claude Privacy) with the official help links, plus the thumbs-up/down catch. Checked 5 Nov 2026.',
+    external: false,
+    event: 'click-tool-privacy',
+    kind: 'tool',
+  },
+  {
     label: "LIMITS: who still has Claude's 5-hour limit",
     href: 'https://promptanddone.com/go/limits/',
     ariaLabel: 'Get the LIMITS breakdown — Claude plans after the Oct 30 rename and how to check if you are verified',

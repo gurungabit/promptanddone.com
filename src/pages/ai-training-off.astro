@@ -1,0 +1,41 @@
+---
+// promptanddone.com/ai-training-off: the PRIVACY pack (DM deliverable for the "ai-training-off-switch" reel). /go/privacy redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Stop ChatGPT, Gemini and Claude training on your chats — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · PRIVACY</p>
+      <h1>The 3 off switches for AI training on your chats</h1>
+      <p class="tag">ChatGPT, Gemini and Claude can use your chats to train their models, on free and paid personal plans. Here's where each switch is, and the one catch.</p>
+      <p class="note">Checked 5 Nov 2026 on each company's own help pages. Menus move; the source links are below each step.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> ChatGPT</h2>
+      <p><strong>Settings → Data controls → Improve the model for everyone → off → Done.</strong> On mobile: sidebar → your profile → Data controls. It's on by default for Free, Plus and Pro, and turning it off keeps your chat history.</p>
+      <p>Codex has its own separate setting (Codex settings → Include environments).</p>
+      <p class="label"><a href="https://help.openai.com/en/articles/7730893-data-controls-faq">help.openai.com: Data controls in ChatGPT</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Gemini</h2>
+      <p><strong>Turn off Keep Activity</strong> (in Gemini: Settings → Activity, or at myactivity.google.com/product/gemini). With it on, Google uses your activity to improve its services, including training generative AI models, with help from human reviewers.</p>
+      <p>The trade-off: with it off, your chats aren't saved to your activity (Google keeps them 72 hours to respond and for safety).</p>
+      <p class="label"><a href="https://support.google.com/gemini/answer/13594961">support.google.com: Gemini Apps Privacy Hub</a></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Claude</h2>
+      <p><strong>Settings → Privacy → Help improve our AI models → off.</strong> Applies to Claude Free, Pro and Max (and Claude Code on those plans). New chats and coding sessions stop being used for training.</p>
+      <p class="label"><a href="https://privacy.claude.com/en/articles/12109829-how-do-i-change-my-model-improvement-privacy-settings">privacy.claude.com: model improvement settings</a></p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">!</span> The catch: 👍 and 👎</h2>
+      <p>Even with training off, rating a reply can send that conversation in. OpenAI: "if you submit feedback … we may use the entire conversation associated with that feedback to improve our models, even if you have opted out." Gemini: with Keep Activity off, feedback sends the feedback plus your last 24 hours of chats.</p>
+      <p>For a one-off sensitive question, use a temporary chat (ChatGPT, Gemini) or an incognito chat (Claude).</p>
+      <p class="label"><a href="https://help.openai.com/en/articles/5722486-how-your-data-is-used-to-improve-model-performance">help.openai.com: How your data is used</a></p>
+    </section>
+    <section class="card" aria-labelledby="s5">
+      <h2 id="s5">Work accounts</h2>
+      <p>ChatGPT Business/Enterprise/Edu, Claude for Work and the API, and Google Workspace Gemini have different defaults set by your organisation.</p>
+    </section>
+  </main>
+</PackLayout>
