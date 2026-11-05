@@ -1,0 +1,46 @@
+---
+// promptanddone.com/limits: the LIMITS breakdown (DM deliverable for the "claude-5-hour-limit-gone" reel). Prepared, not deployed.
+import PackLayout from '../layouts/PackLayout.astro';
+const plans = [
+  ["Free", "$0", "Limited usage every 5 hours and every week", "Yes"],
+  ["Pro", "$20/mo ($17/mo billed yearly)", "More than Free, every 5 hours and every week", "Yes"],
+  ["Max (was Max 5x)", "$100/mo", "5x Pro, every 5 hours and every week", "Yes"],
+  ["Ultra (was Max 20x)", "$200/mo", "10x Pro every week", "No, for verified accounts"],
+];
+---
+<PackLayout title="Claude plans after the Oct 30 rename: who still has the 5-hour limit — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · LIMITS</p>
+      <h1>Claude's 5-hour limit: who still has it</h1>
+      <p class="tag">On 30 Oct 2026 Anthropic renamed its top plans. Max 5x is now Max and Max 20x is now Ultra. Prices didn't change. Verified Ultra accounts no longer have a 5-hour limit.</p>
+      <p class="note">Checked 4 Nov 2026 against claude.com/pricing and the Claude Help Center. Plans and prices can change.</p>
+    </header>
+    <section class="card" aria-labelledby="t">
+      <h2 id="t">Plan by plan</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Plan</th><th>Price</th><th>Usage</th><th>5-hour limit?</th></tr></thead>
+        <tbody>{plans.map(([p, c, u, f]) => <tr><td>{p}</td><td>{c}</td><td>{u}</td><td>{f}</td></tr>)}</tbody>
+      </table></div>
+    </section>
+    <section class="card" aria-labelledby="c">
+      <h2 id="c">Are you verified? A 10-second check</h2>
+      <p>Open Claude, go to <strong>Settings → Usage</strong>. If you don't see a <strong>Current session</strong> bar, you're verified and the 5-hour limit is off. You'll only see your weekly limit.</p>
+    </section>
+    <section class="card" aria-labelledby="w">
+      <h2 id="w">What didn't change</h2>
+      <ul>
+        <li>Weekly limits stay on every plan, Ultra included (10x Pro).</li>
+        <li>Pro and Max still reset every 5 hours.</li>
+        <li>Existing Max 20x subscribers moved to Ultra automatically, with no price change.</li>
+      </ul>
+    </section>
+    <section class="card" aria-labelledby="s">
+      <h2 id="s">Sources</h2>
+      <ul>
+        <li><a href="https://claude.com/pricing">claude.com/pricing</a></li>
+        <li><a href="https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan">What is the Ultra plan? (Claude Help Center)</a></li>
+      </ul>
+    </section>
+  </main>
+</PackLayout>

@@ -509,6 +509,15 @@ export const tools: Tool[] = [
     kind: 'tool',
   },
   {
+    label: "LIMITS: who still has Claude's 5-hour limit",
+    href: 'https://promptanddone.com/go/limits/',
+    ariaLabel: 'Get the LIMITS breakdown — Claude plans after the Oct 30 rename and how to check if you are verified',
+    description: 'Plan by plan after the 30 Oct 2026 rename (Max 5x is now Max, Max 20x is now Ultra), who still has the 5-hour limit, and the 10-second Settings > Usage check for verified accounts.',
+    external: false,
+    event: 'click-tool-limits',
+    kind: 'tool',
+  },
+  {
     label: 'REELKIT: build your own AI reels',
     href: 'https://promptanddone.com/go/reelkit/',
     ariaLabel: 'Get the REELKIT — the free starter kit to make AI-narrated 3D reels with Claude Code',
