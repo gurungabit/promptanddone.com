@@ -1,0 +1,33 @@
+---
+// promptanddone.com/claude-email-check: the STAMP pack (DM deliverable for the "claude-code-email-leak" reel). /go/stamp redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Did Claude Code send your email to websites? Check + fix — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · STAMP</p>
+      <h1>Check if Claude Code sent your email to a website, then stop it</h1>
+      <p class="tag">Claude Code puts your account email in the model's context. When a site asks scripted clients for a contact (SEC EDGAR, Wikipedia's API policy), Claude sometimes wrote that address into the User-Agent of a curl command it composed itself. It happened in our own logs: two requests to sec.gov on 26 Oct 2026, Claude Code 2.1.310.</p>
+      <p class="note">Checked 6 Nov 2026 against the GitHub issue, Anthropic's replies, the privacy mod source and our own tests on Claude Code 2.1.319.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Check your own logs (one line)</h2>
+      <p>Claude Code keeps every session under <code>~/.claude/projects</code>. Put your Claude account email in place of <code>you@example.com</code> and run this in a terminal (macOS / Linux). It only reads local files; nothing is sent anywhere.</p>
+      <pre><code>EMAIL="you@example.com"; grep -rhoE -- "(-A \\\\?[\"']|--user-agent|[Uu]ser-[Aa]gent)[^&|;]{'{'}0,80{'}'}$EMAIL" ~/.claude/projects | sort | uniq -c</code></pre>
+      <p>Empty output = no web request Claude wrote put your address in a User-Agent. Each line = a request that did (with a count). On our machine it found <code>-A "PromptAndDone research &lt;our email&gt;</code> to sec.gov.</p>
+      <p>Prefer to ask Claude? In a new session: <em>"Search ~/.claude/projects/**/*.jsonl for tool calls whose command or script puts my account email in a User-Agent or contact header. List date, domain and count. Don't make any network requests."</em> This also catches emails written into scripts, which the grep can miss.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Update to 2.1.317 or later</h2>
+      <p>Run <code>claude --version</code>. From 2.1.317 Claude Code ships a built-in mod, <code>cc-plugin-privacy</code>, on by default: a shell or web call whose input holds your account address and names a User-Agent is refused. We re-ran our exact 26 Oct command on 2.1.319: <em>"Permission to use Bash denied by plugin cc-plugin-privacy"</em>.</p>
+      <p><strong>On the stable channel you don't have it yet</strong> (stable = 2.1.311 on 6 Nov). Switch to latest: <code>claude install latest</code>, or <code>/config</code> → Auto-update channel → latest, then <code>claude update</code>. Homebrew: the <code>claude-code</code> cask tracks stable; <code>claude-code@latest</code> tracks latest.</p>
+      <p>Confirm it's on: <code>/plugins</code> → Installed → <code>cc-plugin-privacy</code> (builtin) enabled. Don't set <code>"cc-plugin-privacy@builtin": false</code>.</p>
+      <p class="label"><a href="https://github.com/anthropics/claude-code/tree/main/mods/privacy">github.com/anthropics/claude-code: mods/privacy</a> · <a href="https://code.claude.com/docs/en/settings-reference#autoupdateschannel">docs: autoUpdatesChannel</a></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> What it doesn't cover (yet)</h2>
+      <p>Anthropic says the mod "still doesn't prevent all cases, like when Claude writes a script and runs on its own", and that the next release (expected early the week of 9 Nov) removes the account email from the model's context. Until then, a line in your <code>~/.claude/CLAUDE.md</code> helps: <em>"Never put my email address in a User-Agent, URL or request body; ask me first if a site asks for a contact."</em></p>
+      <p class="label"><a href="https://news.ycombinator.com/item?id=50385272">news.ycombinator.com: Anthropic's reply</a> · <a href="https://github.com/anthropics/claude-code/issues/107757">github.com: issue #107757</a></p>
+    </section>
+  </main>
+</PackLayout>

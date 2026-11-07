@@ -536,6 +536,15 @@ export const tools: Tool[] = [
     kind: 'tool',
   },
   {
+    label: 'STAMP: did Claude Code send your email? Check + fix',
+    href: 'https://promptanddone.com/go/stamp/',
+    ariaLabel: 'Get the STAMP check — find out if Claude Code put your email in a web request, and turn on the privacy fix',
+    description: 'A one-line check for your Claude Code logs, the 2.1.317+ privacy mod and how to switch from stable to latest, plus what it does not catch yet. Checked 6 Nov 2026.',
+    external: false,
+    event: 'click-tool-stamp',
+    kind: 'tool',
+  },
+  {
     label: 'GLMSWAP: Revolut\'s self-hosted GLM talk + model page',
     href: 'https://promptanddone.com/go/glmswap/',
     ariaLabel: 'Get the GLMSWAP sources — Revolut\'s AI Engineer talk on self-hosted GLM and the model page',
