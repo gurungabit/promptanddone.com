@@ -1,0 +1,57 @@
+---
+// promptanddone.com/mcp-menu: the MCPMENU pack (DM deliverable for the "mcp-explained-how-claude-uses-apps" reel). /go/mcpmenu redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="My tiny MCP calendar server (19 lines) + how to add it to Claude Code — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · MCPMENU</p>
+      <h1>Build the tiny MCP server from the reel and watch Claude use it</h1>
+      <p class="tag">Claude can't open your apps by itself. An MCP server hands it a menu of tools (<code>tools/list</code>); Claude writes an order (<code>tools/call</code> with arguments); the server does the real work and sends the result back. This is the exact server we used, 19 lines of Python.</p>
+      <p class="note">Tested 7 Nov 2026 on a Mac: Claude Code 2.1.319, Python <code>mcp</code> SDK 2.3.0. The "calendar" is a local JSON file standing in for a calendar app.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The server (calendar_server.py)</h2>
+      <pre><code>{`# A tiny MCP server: it offers Claude one tool that reads my calendar file.
+import json
+from pathlib import Path
+
+from mcp.server.mcpserver import MCPServer
+
+CALENDAR = Path(__file__).with_name("calendar.json")
+server = MCPServer("my-calendar")
+
+
+@server.tool()
+def get_events(day: str) -> list[dict]:
+    """List the events on my calendar for a weekday, e.g. 'monday'."""
+    events = json.loads(CALENDAR.read_text())
+    return events.get(day.strip().lower(), [])
+
+
+if __name__ == "__main__":
+    server.run()  # speaks MCP over stdin/stdout`}</code></pre>
+      <p>Next to it, <code>calendar.json</code>:</p>
+      <pre><code>{`{"monday": [{"time": "09:30", "title": "Dentist"},
+            {"time": "13:00", "title": "Lunch with Sam"},
+            {"time": "17:00", "title": "Gym"}]}`}</code></pre>
+      <p>Uses <code>mcp</code> 2.x (<code>pip install mcp</code>). On the older 1.x SDK the import is <code>from mcp.server.fastmcp import FastMCP</code> and <code>server = FastMCP("my-calendar")</code>; the rest is the same.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Add it to Claude Code (this project only)</h2>
+      <pre><code>{`claude mcp add --scope project my-calendar -- python /full/path/calendar_server.py`}</code></pre>
+      <p>Project scope writes a <code>.mcp.json</code> in the current folder; Claude Code asks you to approve it the first time. Then ask: <em>"What's on my calendar Monday?"</em> Claude reads the menu, calls <code>get_events</code> with <code>{`{"day": "monday"}`}</code> and answers with your three events.</p>
+      <p>Remove it again: <code>claude mcp remove --scope project my-calendar</code>.</p>
+      <p class="label"><a href="https://code.claude.com/docs/en/mcp">code.claude.com/docs/en/mcp</a></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> See the real messages</h2>
+      <p>The JSON on screen in the reel is our real log. To log your own, start the server through a tiny proxy that writes every JSON-RPC line to a file (<code>logproxy.py</code>: spawn the server, copy stdin/stdout line by line, append each line to <code>mcp-log.jsonl</code>). You'll see <code>tools/list</code>, then <code>tools/call</code> with <code>"name": "get_events"</code> and <code>"arguments": {`{"day": "monday"}`}</code>, then the result.</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> Why it's safe-ish (and when it isn't)</h2>
+      <p>Claude can only call the tools a connected server offers, and you decide which servers to connect. The official docs call MCP "a USB-C port for AI applications". Anthropic's advice: verify you trust each server before connecting it; servers that fetch outside content can expose you to prompt injection.</p>
+      <p class="label"><a href="https://modelcontextprotocol.io/docs/getting-started/intro">modelcontextprotocol.io: What is MCP?</a></p>
+    </section>
+  </main>
+</PackLayout>

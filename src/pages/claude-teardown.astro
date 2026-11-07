@@ -1,0 +1,31 @@
+---
+// promptanddone.com/claude-teardown: the TEARDOWN pack (DM deliverable for the "teardown-claude-3d-machines" reel). /go/teardown redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Teardown: Claude builds a 3D machine you can take apart — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · TEARDOWN</p>
+      <h1>Ask Claude Code how a machine works, get a 3D simulator you can take apart</h1>
+      <p class="tag">Teardown is a free, MIT-licensed Claude Code skill by elvarofficial. You ask in plain words ("build me a simulator of a jet engine I can take apart") and Claude writes the machine, a small physics model and the page: one offline HTML file with the machine running, live gauges, a button for every part, cutaways, an explode slider and a self-running tour.</p>
+      <p class="note">Tested 7 Nov 2026 on our Mac (Claude Code 2.1.319, Opus 5.5): one prompt, no follow-ups. Jet engine: 20 min, 53 turns, a 773 KB HTML file with 17 parts. Mechanical watch: 18 min. API-equivalent cost about $4.70 each; on a Pro/Max plan it uses your plan's usage instead.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install (2 minutes)</h2>
+      <p>Needs Claude Code, Node.js 20+, and for recorded videos ffmpeg + Python 3.</p>
+      <pre><code>npx skills add elvarofficial/teardown -g -a claude-code</code></pre>
+      <p>Then, once, inside the installed skill folder: <code>npm install &amp;&amp; npx playwright install chromium</code>. Leave out <code>-g</code> to install it into one project only.</p>
+      <p class="label"><a href="https://github.com/elvarofficial/teardown">github.com/elvarofficial/teardown</a> (MIT)</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The prompt</h2>
+      <pre><code>Build me a simulator of a jet engine I can take apart.</code></pre>
+      <p>Other prompts that work: <em>"How does a mechanical watch keep time? Show me as a simulator I can take apart."</em> · <em>"Make a teardown of a hydraulic excavator arm and record a 20-second video of it."</em> The skill's own tip: name a real machine (a CFM56, a Swiss lever movement), because it builds closer to a real reference than to a vague idea.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> What you get, and the honest catch</h2>
+      <p>Our jet engine: a CFM56-7B-class turbofan, quarter cutaway, thrust lever from idle to takeoff with N1/N2/EGT gauges and a core temperature/pressure chart driven by one model, airflow particles, Explode (E), Strip it (removes the parts in shop order), Isolate and views 1-5. It opens in any browser and works offline.</p>
+      <p>The catch: it takes 15-20 minutes and a lot of tokens per machine (it reviews its own screenshots before it stops). The numbers come from a simplified model the agent writes and tunes, not an engineering tool: great for learning how something works, not for real engineering.</p>
+    </section>
+  </main>
+</PackLayout>

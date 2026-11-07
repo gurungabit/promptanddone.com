@@ -1,0 +1,38 @@
+---
+// promptanddone.com/agent-autoloop: the AUTOLOOP pack (DM deliverable for the "agent-autoloop-pings-you" reel). /go/autoloop redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Agent Autoloop: let Claude Code work and only ping you when it matters — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · AUTOLOOP</p>
+      <h1>Let Claude Code work in the background and ping you only when a decision is yours</h1>
+      <p class="tag">Agent Autoloop (free, MIT) turns Claude Code or Codex into a background loop: the agent works one round, exits, and sends you a card only when it needs your call. While it waits, no agent process runs and no tokens are spent; your answer resumes the same conversation.</p>
+      <p class="note">Tested 7 Nov 2026 on a Mac with v1.6.2: a focus-timer web app + tests ran 6 min 42 s unattended, asked one question (25 or 50 minutes?), waited 1 min 55 s with zero agent processes, then finished 25 s after we answered. 32 tests passing.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install (macOS / Linux)</h2>
+      <p>You need Node 24 or newer, Git and a signed-in <code>claude</code> (or <code>codex</code>) CLI.</p>
+      <pre><code>curl -fsSL https://raw.githubusercontent.com/KKKKhazix/agent-autoloop/main/install.sh | sh</code></pre>
+      <p>Windows PowerShell: <code>irm https://raw.githubusercontent.com/KKKKhazix/agent-autoloop/main/install.ps1 | iex</code>. The installer sets up a small background hub; desktop notifications are on by default (Slack, Discord, Feishu and others are optional).</p>
+      <p class="label"><a href="https://github.com/KKKKhazix/agent-autoloop">github.com/KKKKhazix/agent-autoloop</a> · <a href="https://github.com/KKKKhazix/agent-autoloop/blob/main/README.en.md">English README</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Try the full loop in a minute</h2>
+      <pre><code>agent-autoloop try</code></pre>
+      <p>The agent asks you one test question and exits. Answer it with <code>agent-autoloop answer 1 2</code>, then <code>agent-autoloop status</code> shows it picked the same session back up and finished. Heads-up: CLI and notification text are still in Chinese (English README; the agent writes its questions in your prompt's language; ours came back in English).</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Give it a real job (the rule we used)</h2>
+      <p>Add a rule to <code>~/.agent-autoloop/rules.json</code>, then send the event with <code>agent-autoloop emit build.start</code>:</p>
+      <pre><code>{'{'} "name": "build-app", "when": {'{'} "source": "local", "types": ["build.*"] {'}'},
+  "to": "claude", "cwd": "~/code/nightshift",
+  "prompt": "Build a single-page focus timer ... cover the logic with node:test tests and run them until they pass. Commit your work. Make every technical and design call yourself. One thing is my call: whether a session defaults to 25 or 50 minutes." {'}'}</code></pre>
+      <p>Tell it what's yours to decide; it decides the rest. With no reserved decision, our first run finished in 8 minutes without a single ping. Rules can also run on a schedule (<code>"cron": "0 9 * * *"</code>) or on GitHub issues.</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> Before you leave it running</h2>
+      <p>Model usage is billed to your own Claude or OpenAI account. For automated workloads, providers recommend API keys over personal subscriptions (see the README's "Usage and provider terms"). Agents run with the access you give them in <code>rules.json</code> (default: edit); use a throwaway folder first.</p>
+    </section>
+  </main>
+</PackLayout>

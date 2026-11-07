@@ -1,0 +1,47 @@
+---
+// promptanddone.com/free-ai-on-mac: the FREEMAC pack (DM deliverable for the "stop-paying-free-ai-on-mac" reel). /go/freemac redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+const whisper = "brew install ffmpeg\npip install mlx-whisper\nmlx_whisper interview.mp3 --model mlx-community/whisper-large-v3-turbo --language en --output-format txt";
+const indra = "pip install indra-ocr\nindra-ocr receipt-photo.jpg --timings";
+const flux = "uv tool install --upgrade mflux\nmflux-generate-flux2 --model flux2-klein-4b --steps 4 --width 864 --height 1536 --seed 6 --prompt \"A bakery storefront seen straight on ... photograph\" --output base.png\nmflux-generate-flux2-edit --model flux2-klein-4b --steps 4 --image-paths base.png --seed 1 --prompt \"The same bakery storefront straight on, at night in heavy snowfall ... photograph\" --output snow.png";
+const chatterbox = "python3.11 -m venv .venv && source .venv/bin/activate\npip install chatterbox-tts\npython - <<'PY'\nimport torchaudio as ta\nfrom chatterbox.tts import ChatterboxTTS\nmodel = ChatterboxTTS.from_pretrained(device=\"mps\")\nwav = model.generate(\"Every word you heard was free.\", audio_prompt_path=\"my_voice_14s.wav\")\nta.save(\"out.wav\", wav, model.sr)\nPY";
+---
+<PackLayout title="4 AI subscriptions you can replace with free tools on a Mac — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · FREEMAC</p>
+      <h1>4 AI subscriptions, 4 free tools that run on your Mac</h1>
+      <p class="tag">Every tool here is one we ran ourselves on an Apple-silicon Mac, with the real numbers from our tests. All four run locally: no account, no upload, no monthly bill. You need a Mac with an M-series chip, some disk space for the model weights, and a terminal.</p>
+      <p class="note">Prices and licenses checked 7 Nov 2026 on the official pages. Speeds depend on your Mac; ours were an M5 Max (64 GB) and an M4 Pro (24 GB).</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Transcription → mlx-whisper (instead of e.g. Otter Pro, $16.99/mo)</h2>
+      <p>OpenAI's Whisper large-v3-turbo running on Apple's MLX. Our test: a 60 min 33 s LibriVox audiobook (Alice in Wonderland, ch. 1-4) transcribed in <strong>28.2 s</strong> on an M5 Max, <strong>4.2% word error rate</strong> against the book text. The first run downloads the model weights.</p>
+      <pre><code>{whisper}</code></pre>
+      <p class="label">mlx-whisper 0.4.3 (MIT) · <a href="https://pypi.org/project/mlx-whisper/">pypi.org/project/mlx-whisper</a> · model <a href="https://huggingface.co/mlx-community/whisper-large-v3-turbo">mlx-community/whisper-large-v3-turbo</a> (Whisper weights: MIT). Accuracy drops with noise, accents and crosstalk.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Scanning / OCR → indra-ocr (instead of a scanner-app plan, e.g. Genius Scan Ultra, $39.99/yr)</h2>
+      <p>Point it at a phone photo or a scanned PDF; it returns clean Markdown with headings and tables. Our test: a crooked, shadowed photo of an order page came back word-for-word with the full price table in <strong>0.5 s</strong> (73 ms of OCR) on an M5 Max; upside-down and sideways photos gave identical output. The model is about 76 MB.</p>
+      <pre><code>{indra}</code></pre>
+      <p class="label">indra-ocr 1.1.2 · <a href="https://github.com/datalab-to/indra">github.com/datalab-to/indra</a> · code Apache 2.0; model weights under a modified OpenRAIL-M license (free for personal use and small companies, see the repo). Handwriting is weak; we didn't claim it. Our test photo was a simulated phone shot.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> AI images and photo edits → FLUX.2 [klein] 4B via mflux (instead of e.g. Midjourney Basic, $10/mo)</h2>
+      <p>Black Forest Labs' small FLUX.2 model, 4 steps, fully local. Our test made the bakery photo from one sentence (46 s) and turned it into a snowy night shot with a second sentence (79 s) on an M4 Pro with 24 GB. First run downloads about 15 GB of weights and peaks around 20 GB of memory, so 24 GB+ is comfortable.</p>
+      <pre><code>{flux}</code></pre>
+      <p class="label">FLUX.2-klein-4B: Apache 2.0 (<a href="https://huggingface.co/black-forest-labs/FLUX.2-klein-4B">model card</a>; the 9B variant is non-commercial) · mflux 0.24.0 (MIT) · <a href="https://github.com/mflux-community/mflux">github.com/mflux-community/mflux</a>. On mflux 0.23.0 we needed <code>uv tool install --with "pillow&lt;12" mflux</code>.</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> Voice cloning → Chatterbox (instead of e.g. ElevenLabs Starter, $6/mo)</h2>
+      <p>The voice in the reel <em>is</em> Chatterbox: we generated the whole narration on our Mac from a 14-second reference clip of the channel's narrator, 4 takes per sentence, then kept the takes that passed a word-for-word speech-recognition check. Earlier test (Chatterbox Turbo, M4 Pro): 5 s of speech in 3.4 s. Only clone voices you have the right to use; Chatterbox stamps its built-in Perth watermark on every clip.</p>
+      <pre><code>{chatterbox}</code></pre>
+      <p class="label">chatterbox-tts 0.1.7 (MIT) · <a href="https://huggingface.co/ResembleAI/chatterbox">huggingface.co/ResembleAI/chatterbox</a> · Python 3.11, about 3 GB of weights.</p>
+    </section>
+    <section class="card" aria-labelledby="s5">
+      <h2 id="s5"><span class="n">5</span> The math</h2>
+      <p>Otter Pro $16.99 + Genius Scan Ultra $39.99/yr (≈ $3.33/mo) + Midjourney Basic $10 + ElevenLabs Starter $6 = <strong>$36.32 a month</strong> at monthly-billing list prices (7 Nov 2026). Annual plans and promos are cheaper; the paid apps also do things these tools don't (sync, sharing, editing UIs, cloud speed on slower Macs).</p>
+      <p class="label"><a href="https://otter.ai/pricing">otter.ai/pricing</a> · <a href="https://thegrizzlylabs.com/genius-scan/pricing">Genius Scan pricing</a> · <a href="https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans">Midjourney plans</a> · <a href="https://elevenlabs.io/pricing">elevenlabs.io/pricing</a></p>
+    </section>
+  </main>
+</PackLayout>

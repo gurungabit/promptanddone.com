@@ -1,0 +1,39 @@
+---
+// promptanddone.com/four-part-prompt: the BULLSEYE pack (DM deliverable for the "four-part-prompt" reel). /go/bullseye redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="The 4-part prompt template (context, task, format, limit) — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · BULLSEYE</p>
+      <h1>The 4-part prompt: same AI, better answer</h1>
+      <p class="tag">We ran the same everyday task twice through Claude on 7 Nov 2026. The one-liner returned a 220-word template with 9 blanks to fill. The 4-part prompt returned a 70-word text, ready to send, ending in one clear ask.</p>
+      <p class="note">The four parts follow Anthropic's prompting guide (be clear and specific, give context, say the format). Works the same way in ChatGPT or Gemini. One run each; outputs vary.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Copy the template</h2>
+      <pre><code>CONTEXT: I'm [who you are]. [What's going on, the facts, who it's for.]
+TASK: Write [exactly what you want made].
+FORMAT: [Shape: a text / email / table / bullet list], [length: under N words], [tone].
+LIMIT: Keep it [what to keep it to]. Instead of [what you don't want], [do this].</code></pre>
+      <p>Tip from the guide: phrase limits as what to do ("keep it friendly and plain") rather than only what not to do.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The exact prompt from the reel</h2>
+      <pre><code>You're helping a tenant write to their landlord. I rent a flat; the heating has been broken since Monday, it's about 12°C inside, and I emailed once on Tuesday with no reply. My landlord is Mr. Patel and we're on good terms.
+
+Write a text message asking him to get the heating fixed.
+
+Keep it under 80 words, friendly but firm, ending with one clear ask: a repair date by Friday.
+
+Don't threaten or mention legal action, and don't use phrases like "I hope this finds you well".</code></pre>
+      <p><strong>What came back:</strong> "Hi Mr. Patel, it's [Your Name] from the flat. The heating has been broken since Monday and it's down to about 12°C inside, so it's getting hard to keep warm. I emailed on Tuesday but haven't heard back, so I'm texting in case it got missed. I know repairs take some arranging, but I do need this sorted soon. Could you let me know a repair date by Friday?"</p>
+      <p>The one-liner (<em>"write a message asking my landlord to fix the heating"</em>) gave a generic email with [Landlord's name], [address / unit number], [date it started] and six more blanks.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Why it works</h2>
+      <p>Context tells the model the facts it can't guess. A specific task stops it hedging with a template. Format sets the shape and length. A limit removes the filler. Anthropic's test: show your prompt to a colleague with no context; if they'd be confused, the model will be too.</p>
+      <p class="label"><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">Anthropic: Prompting best practices</a></p>
+    </section>
+  </main>
+</PackLayout>

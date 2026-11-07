@@ -1,0 +1,25 @@
+---
+// Redirect stub: promptanddone.com/go/teardown
+const target = '/claude-teardown';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="refresh" content={`1;url=${target}`} />
+    <title>Teardown: Claude builds a 3D machine you can take apart — Prompt &amp; Done</title>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="bcc826ef-5592-45d9-89ac-eb7eb243acb2"></script>
+    <script define:vars={{ target }}>
+      // Hold 500ms so the Umami pageview beacon fires before the redirect.
+      setTimeout(function () {
+        window.location.replace(target);
+      }, 500);
+    </script>
+  </head>
+  <body>
+    <p>Taking you to the TEARDOWN pack…</p>
+    <p><a href={target}>Tap here if you're not redirected.</a></p>
+  </body>
+</html>

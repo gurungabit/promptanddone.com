@@ -1,0 +1,57 @@
+---
+// promptanddone.com/openmausbot-team: the MAUSBOT pack (DM deliverable for the "openmausbot-ai-bot-team" reel). /go/mausbot redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="OpenMausBot: your own team of AI bots in one chat (setup + our team file) — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · MAUSBOT</p>
+      <h1>Run your own team of AI bots on the Claude or Codex login you already have</h1>
+      <p class="tag">OpenMausBot is a free, open-source (Apache-2.0) chat app where every contact is a real agent: the <code>claude</code> or <code>codex</code> CLI on your machine, each bot with its own personality and model. We made three bots (Boss, Scout, Builder), sent one message, and got a finished one-page site back in 3 min 27 s.</p>
+      <p class="note">Tested 7 Nov 2026 on macOS with openmausbot 0.1.146 (npm), Node 24, a logged-in Claude Code and Codex CLI. Independent project, not affiliated with xAI, Meta, OpenAI or Manus.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install (2 minutes)</h2>
+      <p>Desktop app: download the Mac (Apple silicon / Intel), Windows or Ubuntu build from the latest GitHub release. Or the server + browser version (Node 24+):</p>
+      <pre><code>npm install -g openmausbot
+openmausbot</code></pre>
+      <p>You need at least one agent CLI installed and logged in: <code>claude</code> (Claude Code), <code>codex</code> or <code>grok</code>. Bots use that login, so your plan's normal usage limits apply. Local chat needs no extra keys.</p>
+      <p class="label"><a href="https://github.com/milind-soni/OpenMausBot">github.com/milind-soni/OpenMausBot</a> · <a href="https://www.openmausbot.com/">openmausbot.com</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Our three-bot team file</h2>
+      <p>Save as <code>team.yaml</code> (change <code>cwd</code> to a folder that exists), then run <code>openmausbot team apply team.yaml</code> while the app or server is running. The Boss is the team's Chief of Staff; Scout researches; Builder (on Codex) builds.</p>
+      <pre><code>version: 1
+teams:
+  - name: Launch Crew
+    brief: We turn one request into a finished, shareable result. Keep replies short. Save every file in the working folder.
+bots:
+  - name: Boss
+    team: Launch Crew
+    chief: true
+    soul: You run the crew and never do the work yourself. For every request, send the research job to Scout, wait for it, then send Scout's findings to Builder to build. When Builder is done, report back in two short lines with the file name.
+    model: claude/claude-sonnet-5
+    cwd: /path/to/work
+  - name: Scout
+    team: Launch Crew
+    soul: You only research. Search the live web and return a tight, sourced list as your reply. Never write files or build pages.
+    model: claude/claude-sonnet-5
+    cwd: /path/to/work
+  - name: Builder
+    team: Launch Crew
+    soul: You only build. You turn notes into one polished, self-contained index.html (inline CSS, no external assets), dark, bold, mobile-first.
+    model: codex/gpt-6.1-sol
+    cwd: /path/to/work</code></pre>
+      <p>Tip from our first try: without the "only research / never build" lines, the Scout built the page itself and the Builder sat idle. Give each bot one job.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> The message we sent</h2>
+      <pre><code>Find this week's 5 fastest-rising AI repos on GitHub and build me a one-page site that ranks them.</code></pre>
+      <p>Send it to the Boss. It sent the research to Scout, checked the list against the GitHub pages itself, handed it to Builder, and reported back with the file. The rankings on the resulting page are the bots' own research, not checked by us.</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> What costs money (optional)</h2>
+      <p>Cloud computers for bots come from Boat (boat.dev): paid after its trial. Connected apps (Gmail, Slack, GitHub…) go through Composio with its own account. Talking bots use ElevenLabs or Fish Audio keys. None of these were used in our run.</p>
+    </section>
+  </main>
+</PackLayout>

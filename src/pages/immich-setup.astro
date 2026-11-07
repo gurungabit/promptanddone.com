@@ -1,0 +1,45 @@
+---
+// promptanddone.com/immich-setup: the IMMICH pack (DM deliverable for the "immich-free-google-photos-ai" reel). /go/immich redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Google Photos-style AI search, free on your own computer (Immich setup) — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · IMMICH</p>
+      <h1>Run Immich: Google Photos-style AI search on your own computer</h1>
+      <p class="tag">Immich is a free, open-source (AGPL-3.0) self-hosted photo and video library. Its smart search uses a CLIP model that runs on your machine, so you can type "dog on a beach" or "snowy mountains" and it finds the photos, no tags needed. Your library stays on your disk.</p>
+      <p class="note">Checked 7 Nov 2026 against the official docs; tested on Immich v3.3.6.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> What you need</h2>
+      <p>Docker with Compose (Docker Desktop on Mac/Windows; Linux is the recommended host). At least 6 GB RAM (8 GB recommended) and 2 CPU cores (4 recommended). A disk for the library; thumbnails add 10-20 %.</p>
+      <p class="label"><a href="https://docs.immich.app/install/requirements">docs.immich.app: requirements</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Install (about 2 minutes on a fast connection)</h2>
+      <pre><code>mkdir immich-app && cd immich-app
+curl -L -o docker-compose.yml https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml
+curl -L -o .env https://github.com/immich-app/immich/releases/latest/download/example.env
+# edit .env: UPLOAD_LOCATION (where photos live) and DB_PASSWORD
+docker compose up -d</code></pre>
+      <p>Open <code>http://localhost:2283</code>, create the admin account, then upload from the web app or the Immich phone app (iOS/Android) for automatic backup from your phone.</p>
+      <p class="label"><a href="https://docs.immich.app/install/docker-compose">docs.immich.app: Docker Compose</a></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Search like Google Photos</h2>
+      <p>Wait for the background jobs (Administration → Jobs: Smart Search, Face Detection). Then click search and describe the photo in plain words. Tip: Settings → Machine Learning → Smart Search lets you pick a bigger or multilingual CLIP model for better results.</p>
+      <p class="label"><a href="https://docs.immich.app/features/searching">docs.immich.app: searching</a> · <a href="https://docs.immich.app/features/facial-recognition">facial recognition</a></p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> Our test (7 Nov 2026)</h2>
+      <p>Immich v3.3.6, official compose file, CPU only, on an Apple M5 Max Mac (Docker Desktop VM: 18 CPUs, 7.7 GB RAM). Pulling the images took 16 s on our connection; 120 Unsplash-licensed photos uploaded in 3 s; the AI search index was ready 18 s later. Each search showed results in under 2 seconds. "snowy mountains" filled the first screen with snowy peaks; "a dog" ranked a pug and a husky first; "lighthouse at sunset" and "waterfall with a rainbow" put the right photo at #1.</p>
+      <p>Results are a ranked list of your whole library, so lower rows drift off-topic. Slower machines will index slower.</p>
+    </section>
+    <section class="card" aria-labelledby="s5">
+      <h2 id="s5"><span class="n">5</span> Before you delete Google Photos</h2>
+      <p>Self-hosting means you are the backup. Immich's own README: "Always follow 3-2-1 backup plan for your precious photos and videos!" (3 copies, 2 media, 1 off-site). Keep your originals backed up elsewhere.</p>
+      <p class="label"><a href="https://github.com/immich-app/immich">github.com/immich-app/immich</a></p>
+    </section>
+    <p class="note">Narration built with Fish Audio. Test photos: Unsplash License via picsum.photos.</p>
+  </main>
+</PackLayout>

@@ -1,0 +1,96 @@
+---
+// promptanddone.com/neuron: the NEURON pack (DM deliverable for the "how-ai-works-one-multiplication" reel). /go/neuron redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="From one multiplication to Claude: the 50-line neural net — Prompt &amp; Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · NEURON</p>
+      <h1>From one multiplication to a next-word guesser, in 50 lines</h1>
+      <p class="tag">The whole idea behind models like Claude, in the order the reel shows it, plus the real numpy script Claude Code wrote for us and the exact output we got.</p>
+      <p class="note">Written and run 7 Nov 2026 with Python 3 + numpy 2.4 on a Mac. No ML library, no GPU, runs in under a second.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The chain in plain words</h2>
+      <p><strong>Multiply:</strong> one input times one weight (0.8 × 0.5 = 0.4). <strong>Add:</strong> do that for a few inputs and sum them, then add a bias (0.4 − 0.36 + 0.63 + 0.1 = 0.77). <strong>Bend:</strong> pass the sum through a simple non-linear function (ReLU, tanh). That is one <em>neuron</em>.</p>
+      <p>Many neurons side by side = a <em>layer</em>. Layers stacked = a <em>network</em>. Language models add <em>attention</em>: each word (really a token, a word piece) scores the words before it and mixes in the ones that matter. Attention + a feed-forward layer = one transformer block; models stack dozens of them and train them on huge amounts of text to guess the next token. Chat assistants are then fine-tuned further (for example with human feedback) to follow instructions.</p>
+      <p class="label"><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need (2017)</a> · <a href="https://www.deeplearningbook.org/contents/mlp.html">Deep Learning book, ch. 6</a> · <a href="https://arxiv.org/abs/2203.02155">InstructGPT (2022)</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The code (tiny_brain.py, 50 lines)</h2>
+      <p>Save it as <code>tiny_brain.py</code>, then <code>pip install numpy</code> and <code>python tiny_brain.py</code>. Part 1 is one neuron. Part 2 is a tiny network (8-number word embeddings, 32 tanh neurons, one score per word) trained by plain gradient descent to guess the next word from the last 4.</p>
+      <pre><code># From one multiplication to a next-word guesser. Pure numpy, no ML library.
+import numpy as np
+np.random.seed(0)
+
+# 1) One neuron: multiply, add, bend.
+x = np.array([0.8, 0.3, 0.9])          # three input numbers
+w = np.array([0.5, -1.2, 0.7])         # three weights
+b = 0.1                                # bias
+print(&quot;0.8 x 0.5 =&quot;, round(0.8 * 0.5, 2))
+s = x @ w + b                          # weighted sum + bias
+print(&quot;weighted sum + bias =&quot;, round(s, 2), &quot;-&gt; bent (ReLU) =&quot;, round(max(0.0, s), 2))
+
+# 2) Many neurons, stacked, trained to guess the next word.
+text = (&quot;the cat sat on the mat . the dog sat on the rug . &quot;
+        &quot;the cat ate the fish . the dog ate the bone .&quot;).split()
+vocab = sorted(set(text)); ix = &#123;t: i for i, t in enumerate(vocab)&#125;; V = len(vocab)
+C = 4                                  # the model sees the last 4 words
+seq = [&quot;.&quot;] * C + text
+X = np.array([[ix[t] for t in seq[i:i + C]] for i in range(len(text))])
+Y = np.array([ix[t] for t in text])
+
+E  = np.random.randn(V, 8) * 0.5       # word -&gt; 8 numbers
+W1 = np.random.randn(C * 8, 32) * 0.3; b1 = np.zeros(32)   # layer 1: 32 neurons
+W2 = np.random.randn(32, V) * 0.3;     b2 = np.zeros(V)    # layer 2: one score per word
+print(&quot;weights:&quot;, E.size + W1.size + b1.size + W2.size + b2.size)
+
+def forward(X):
+    e = E[X].reshape(len(X), -1)
+    h = np.tanh(e @ W1 + b1)           # multiply, add, bend
+    z = h @ W2 + b2
+    p = np.exp(z - z.max(1, keepdims=True)); p /= p.sum(1, keepdims=True)
+    return e, h, p
+
+lr = 0.2
+for step in range(301):
+    e, h, p = forward(X)
+    loss = -np.log(p[np.arange(len(Y)), Y]).mean()
+    if step % 50 == 0: print(f&quot;step &#123;step:3d&#125;  loss &#123;loss:.3f&#125;&quot;)
+    dz = p.copy(); dz[np.arange(len(Y)), Y] -= 1; dz /= len(Y)
+    dW2 = h.T @ dz; db2 = dz.sum(0)
+    dh = dz @ W2.T * (1 - h ** 2)
+    dW1 = e.T @ dh; db1 = dh.sum(0)
+    de = (dh @ W1.T).reshape(len(X), C, 8)
+    W2 -= lr * dW2; b2 -= lr * db2; W1 -= lr * dW1; b1 -= lr * db1
+    np.subtract.at(E, X, lr * de)      # nudge every weight a little
+
+for ctx in [&quot;cat sat on the&quot;, &quot;dog sat on the&quot;]:
+    _, _, p = forward(np.array([[ix[t] for t in ctx.split()]]))
+    top = np.argsort(-p[0])[:3]
+    print(f&#x27;&quot;&#123;ctx&#125; ...&quot; -&gt;&#x27;, &quot;, &quot;.join(f&quot;&#123;vocab[i]&#125; &#123;p[0][i]:.2f&#125;&quot; for i in top))
+</code></pre>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> What it printed for us</h2>
+      <pre><code>0.8 x 0.5 = 0.4
+weighted sum + bias = 0.77 -&gt; bent (ReLU) = 0.77
+weights: 1507
+step   0  loss 2.568
+step  50  loss 0.203
+step 100  loss 0.082
+step 150  loss 0.044
+step 200  loss 0.029
+step 250  loss 0.021
+step 300  loss 0.016
+&quot;cat sat on the ...&quot; -&gt; mat 0.97, rug 0.01, bone 0.01
+&quot;dog sat on the ...&quot; -&gt; rug 0.98, mat 0.01, cat 0.00
+</code></pre>
+      <p>The loss (how wrong its guesses are) fell from 2.568 to 0.016 in 300 steps. "cat sat on the" and "dog sat on the" end in the same word, yet it answers <em>mat</em> vs <em>rug</em>: it uses the earlier words.</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> What this is not</h2>
+      <p>It has no attention (it looks at a fixed window of 4 words), it memorises a 24-word text, and it has 1,507 weights. Claude's size and exact architecture are not public; this shows the same three moves (multiply, add, bend) and the same training goal (guess the next word), not Claude itself. Try changing the text, the window <code>C</code> or the 32 neurons and watch the loss.</p>
+    </section>
+  </main>
+</PackLayout>

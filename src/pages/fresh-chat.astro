@@ -1,0 +1,32 @@
+---
+// promptanddone.com/fresh-chat: the FRESHCHAT pack (DM deliverable for the "why-long-chats-make-claude-worse" reel). /go/freshchat redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Why Claude gets worse in long chats + the fresh-start prompt — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · FRESHCHAT</p>
+      <h1>Claude isn't getting dumber. Your chat is too long.</h1>
+      <p class="tag">Every time you send a message, the whole conversation is sent to the model again, from the first message. It all has to fit in the context window, and Anthropic's own docs say that as the token count grows, accuracy and recall degrade ("context rot"). Long chats also use more of your usage limit.</p>
+      <p class="note">Checked 7 Nov 2026 against Anthropic's docs and help center, plus our own 30-message run.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The fresh-start prompt</h2>
+      <p>Paste this at the end of a long chat:</p>
+      <pre><code>Summarize this conversation in 10 short lines so I can continue in a new chat. Include: my goal, decisions we made, constraints and rules I gave you (word for word if they're instructions), the current state of the work, open questions, and the very next step. No intro, no commentary.</code></pre>
+      <p>Then open a new chat and start with: <em>"Here's where we are (summary of an earlier chat): [paste]. Continue from the next step."</em></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Cheat-sheet</h2>
+      <p><strong>Claude.ai and the apps:</strong> new topic → new chat. A long chat that drifts or eats your limit → summary + new chat. (With code execution on, Claude can also summarize earlier messages automatically.)</p>
+      <p><strong>Claude Code:</strong> <code>/compact [focus]</code> summarizes the session and keeps going · <code>/clear</code> starts with an empty context (aliases <code>/reset</code>, <code>/new</code>) · <code>/context</code> shows how full the window is. It also auto-compacts near the limit.</p>
+      <p><strong>Rules you always want</strong> (style, "never do X") belong in project instructions or <code>CLAUDE.md</code>, not buried in message one.</p>
+      <p class="label"><a href="https://code.claude.com/docs/en/commands">code.claude.com: commands</a> · <a href="https://code.claude.com/docs/en/costs">code.claude.com: costs</a> · <a href="https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work">support.claude.com: usage and length limits</a></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Our run</h2>
+      <p>One real 30-message chat through Claude Code (headless, Claude Sonnet 5.5, 7 Nov 2026): message 1 asked "What's the capital of Australia?"; messages 2–29 each pasted ~600 words of notes for a 3-bullet summary; message 30 asked the same question again. Input tokens the model read: <strong>954</strong> at message 1, <strong>65,047</strong> at message 30. Most of that was served from the prompt cache, which is cheaper, but it still counts as context. An instruction from message 1 (end every answer with DONE) was still followed at message 30: context rot is gradual and depends on the task, so don't expect a cliff at a set length.</p>
+      <p class="label"><a href="https://platform.claude.com/docs/en/build-with-claude/context-windows">platform.claude.com: context windows</a> · <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">anthropic.com: effective context engineering</a></p>
+    </section>
+  </main>
+</PackLayout>

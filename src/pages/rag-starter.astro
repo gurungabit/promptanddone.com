@@ -1,0 +1,78 @@
+---
+// promptanddone.com/rag-starter: the RAGKIT pack (DM deliverable for the "rag-why-ai-makes-things-up" reel). /go/ragkit redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+const code = String.raw`# rag_starter.py - the smallest useful RAG: retrieve the right line, paste it, ask.
+# Retrieval here is TF-IDF word matching (a simplified stand-in for embeddings).
+import math, re, sys, collections
+
+def words(t): return re.findall(r"[a-z0-9$]+", t.lower())
+
+def retrieve(question, chunks, k=1):
+    docs = [collections.Counter(words(c)) for c in chunks]
+    df = collections.Counter(w for d in docs for w in d)
+    idf = lambda w: math.log((1 + len(docs)) / (1 + df[w])) + 1
+    def vec(c): return {w: n * idf(w) for w, n in c.items()}
+    q = vec(collections.Counter(words(question)))
+    def cos(a, b):
+        dot = sum(a[w] * b.get(w, 0) for w in a)
+        na = math.sqrt(sum(v * v for v in a.values())); nb = math.sqrt(sum(v * v for v in b.values()))
+        return dot / (na * nb or 1)
+    scored = sorted(((cos(q, vec(d)), c) for d, c in zip(docs, chunks)), reverse=True)
+    return scored[:k]
+
+def build_prompt(question, hits):
+    ctx = "\n".join(c for _, c in hits)  # chunks keep their own line numbers
+    return (f"Answer using ONLY these policy lines and cite the line number.\n"
+            f"If they don't contain the answer, say you don't know.\n\n{ctx}\n\nQuestion: {question}")
+
+if __name__ == "__main__":
+    chunks = [l.strip() for l in open(sys.argv[1]) if l.strip()[:1].isdigit()]  # one chunk per policy line
+    question = sys.argv[2]
+    hits = retrieve(question, chunks)
+    prompt = build_prompt(question, hits)
+    print(prompt)
+    # Send it: pip install anthropic, set ANTHROPIC_API_KEY, then uncomment:
+    # import anthropic; r = anthropic.Anthropic().messages.create(model="claude-sonnet-5-5", max_tokens=300, messages=[{"role": "user", "content": prompt}]); print(r.content[0].text)
+`;
+const policy = String.raw`DEMO POLICY (invented numbers) - Northwind Gadgets customer help
+1. Returns are accepted within 21 days of delivery.
+2. Refunds over $50 need the original receipt.
+3. Without a receipt, the most we refund is $50, as store credit.
+4. Opened headphones can be returned only if faulty.
+5. Shipping fees are refunded only when the item arrived damaged.
+6. Gift cards cannot be refunded or exchanged for cash.
+7. Price match: we match our own website price within 7 days.
+8. Warranty repairs take 5 to 10 business days.
+9. Support hours: 8 am to 6 pm, Monday to Saturday.
+10. Damaged items: send a photo within 48 hours of delivery.
+`;
+---
+<PackLayout title="Why your AI makes things up + a 30-line RAG starter — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · RAGKIT</p>
+      <h1>Why your AI makes things up, and the 30-line fix (RAG)</h1>
+      <p class="tag">A language model only knows two things: what it learned in training and what's in your prompt. Your refund policy is in neither, so it either guesses or says it doesn't know. RAG (retrieval-augmented generation) fixes that: find the right piece of your documents and paste it into the prompt.</p>
+      <p class="note">Tested 7 Nov 2026 with Claude Sonnet 5.5 (Claude Code CLI, no tools) on a demo policy with invented numbers.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> How it works, in four steps</h2>
+      <p><strong>Chunk:</strong> split your documents into small pieces (here: one policy line each). <strong>Address:</strong> turn each piece into a list of numbers (an embedding) so similar meanings get nearby numbers. <strong>Retrieve:</strong> turn the question into numbers too and pick the closest piece(s). <strong>Paste:</strong> put those pieces into the prompt and tell the model to answer only from them and cite them.</p>
+      <p>The starter below uses TF-IDF word matching instead of real embeddings so it runs with no installs. It matches words, not meaning, which is exactly why it can grab the wrong chunk (see 3). Swap in an embeddings model for real use.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The starter (Python 3, no dependencies)</h2>
+      <p>Save as <code>rag_starter.py</code>, save the demo policy below as <code>policy.txt</code>, then run <code>python3 rag_starter.py policy.txt "What's the most you'll refund if I don't have a receipt?"</code>. It prints the exact prompt to send; uncomment the last line to send it with the Anthropic SDK (<code>pip install anthropic</code>, set <code>ANTHROPIC_API_KEY</code>).</p>
+      <pre><code set:text={code} /></pre>
+      <p>Demo policy (invented numbers):</p>
+      <pre><code set:text={policy} /></pre>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> What our run showed</h2>
+      <p><strong>No policy attached (3/3 runs):</strong> <em>"I don't have a confirmed no-receipt refund limit, so I can't give you a figure without guessing."</em></p>
+      <p><strong>Line 3 retrieved and pasted (3/3 runs):</strong> <em>"The most we refund without a receipt is $50, as store credit (policy line 3)."</em></p>
+      <p><strong>Where it breaks:</strong> "Can I get my money back on a gift card?" retrieved line 4 (headphones) instead of line 6 (gift cards), because the words "can" and "be" overlapped more. Claude answered <em>"I don't know"</em>, because the prompt told it to. Without that instruction a model may answer from the wrong chunk. Fixes: real embeddings, retrieve the top 3 instead of 1, and keep the "say you don't know" line.</p>
+      <p class="label">Real-world case from the hook: <a href="https://decisions.civilresolutionbc.ca/crt/crtd/en/525448/1/document.do">Moffatt v. Air Canada, 2024 BCCRT 149</a> (an airline was held responsible for what its chatbot told a customer about refunds).</p>
+    </section>
+  </main>
+</PackLayout>

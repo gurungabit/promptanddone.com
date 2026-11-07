@@ -1,0 +1,63 @@
+---
+// promptanddone.com/skillfile: the SKILLFILE pack (DM deliverable for the "claude-skill-is-a-text-file" reel). /go/skillfile redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Make a Claude Skill in 30 seconds: the SKILL.md template — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · SKILLFILE</p>
+      <h1>A Claude Skill is one text file. Here's the template and the one from the reel.</h1>
+      <p class="tag">A skill is a folder with a <code>SKILL.md</code> inside: a name, a description, then the instructions. Claude only sees the name and description of each skill until your request matches one; then it reads the full file. That's why the description is the trigger.</p>
+      <p class="note">Checked 7 Nov 2026 against code.claude.com/docs/en/skills and agentskills.io/specification, and tested in Claude Code 2.1.319.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The template (copy, fill, save)</h2>
+      <pre><code>---
+name: your-skill-name
+description: What it does in one sentence. Use when the user [the exact situations and words that should trigger it].
+---
+
+# Your skill name
+
+When [the situation]:
+
+1. [First step, concrete]
+2. [Output format: exactly what to return]
+3. [Checks to run before answering]
+
+Keep the reply to [the output]. No extra commentary.</code></pre>
+      <p>Rules from the open Agent Skills spec: <code>name</code> up to 64 characters, lowercase letters, numbers and hyphens, the same as the folder name; <code>description</code> up to 1,024 characters, saying what it does <em>and</em> when to use it, with the keywords people will actually type.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The skill from the reel: receipt-to-csv</h2>
+      <pre><code>---
+name: receipt-to-csv
+description: Turns pasted receipt or invoice text into a clean CSV of line items and checks that the items add up to the printed total. Use whenever the user pastes a receipt, bill or invoice, or asks to log, itemize or split an expense.
+---
+
+# Receipt to CSV
+
+When the user pastes receipt text:
+
+1. Extract every purchased line item. Ignore store address, card numbers and loyalty text.
+2. Output a CSV in a code block with exactly these columns:
+   `date,store,item,qty,unit_price,line_total`
+   - date as YYYY-MM-DD, prices as plain numbers with two decimals, no currency symbols.
+3. Under the CSV, print one check line:
+   `CHECK: items 00.00 + tax 00.00 = 00.00 vs printed total 00.00 -> MATCH` (or `MISMATCH by 0.00`).
+4. If anything is unreadable, add the row anyway with `?` in the unclear field and say which row in one short sentence.
+
+Keep the reply to the CSV block and the check line. No extra commentary.</code></pre>
+      <p>Our test (Claude Code CLI, 7 Nov 2026, the skill never named in the prompt): "can you log this for my expenses?" + a pasted receipt loaded the skill 4 of 4 times, "split this with my roommate please" 3 of 3, a haiku request 0 of 4. It returned the CSV and <code>CHECK: items 32.71 + tax 1.31 = 34.02 vs printed total 34.02 -> MATCH</code>.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Where to save it (Claude Code)</h2>
+      <p><strong>Just for you, every project:</strong> <code>~/.claude/skills/receipt-to-csv/SKILL.md</code></p>
+      <p><strong>For a repo and your team:</strong> <code>.claude/skills/receipt-to-csv/SKILL.md</code>, then commit it.</p>
+      <pre><code>mkdir -p ~/.claude/skills/receipt-to-csv
+# paste the file above into ~/.claude/skills/receipt-to-csv/SKILL.md</code></pre>
+      <p>You can also call it directly with <code>/receipt-to-csv</code>. Bigger skills can keep extra files next to <code>SKILL.md</code> (<code>scripts/</code>, <code>references/</code>, templates in <code>assets/</code>) that Claude opens only when needed. Personal skills don't load in Cowork or cloud sessions.</p>
+      <p class="label"><a href="https://code.claude.com/docs/en/skills">code.claude.com: Skills</a> · <a href="https://agentskills.io/specification">agentskills.io: specification</a></p>
+    </section>
+  </main>
+</PackLayout>

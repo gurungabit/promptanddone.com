@@ -1,0 +1,42 @@
+---
+// promptanddone.com/claude-md-starter: the CLAUDENOTE pack (DM deliverable for the "claude-md-project-memory" reel). /go/claudenote redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+const starter = `# CLAUDE.md
+
+## Commands
+- Run tests: \`make check\`   <- replace with yours
+- Lint/format: \`npm run lint\`
+
+## Rules Claude can't guess
+- Every function gets a one-line docstring.
+- Every new function gets a test.
+- Never edit \`legacy/\` or \`vendor/\`.
+
+## Project layout
+- src/ app code, tests/ tests, scripts/ one-off tools`;
+---
+<PackLayout title="The CLAUDE.md starter note: give Claude Code a project memory — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · CLAUDENOTE</p>
+      <h1>The CLAUDE.md starter note</h1>
+      <p class="tag">Claude Code reads <code>CLAUDE.md</code> at the start of every session. Save this as <code>./CLAUDE.md</code> in your project root (or <code>~/.claude/CLAUDE.md</code> for rules that apply to every project), then edit it to your project.</p>
+      <p class="note">Tested 7 Nov 2026 with Claude Code 2.1.319.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The starter note</h2>
+      <pre><code>{starter}</code></pre>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Three tips</h2>
+      <p><strong>Start from /init:</strong> run <code>/init</code> in Claude Code to get a first draft from your codebase, then add the rules it can't discover.</p>
+      <p><strong>Keep it short:</strong> the docs suggest under 200 lines. It's loaded every session and costs context.</p>
+      <p><strong>It's context, not enforcement:</strong> to hard-block an action, use a hook.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Our test</h2>
+      <p>The same <code>claude -p</code> request twice. Without CLAUDE.md: no docstring, no test. With a 3-line CLAUDE.md (run tests with <code>make check</code>; every function gets a one-line docstring in Spanish; every new function gets a test): Spanish docstring and a new test, <code>make check</code> OK. One run each, not a benchmark.</p>
+      <p class="label"><a href="https://code.claude.com/docs/en/memory">code.claude.com/docs/en/memory</a></p>
+    </section>
+  </main>
+</PackLayout>

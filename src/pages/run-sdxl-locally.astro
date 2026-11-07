@@ -1,0 +1,55 @@
+---
+// promptanddone.com/run-sdxl-locally: the DENOISE pack (DM deliverable for the "how-ai-images-work-diffusion" reel). /go/denoise redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Run Stable Diffusion XL on your own computer and watch every step — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · DENOISE</p>
+      <h1>Watch an AI image come out of static, on your own computer</h1>
+      <p class="tag">The free setup from the reel: Stable Diffusion XL running locally with Hugging Face diffusers, saving the picture after every one of its 30 clean-up steps, so you can see the static turn into an image.</p>
+      <p class="note">Tested 7 Nov 2026 on an Apple M5 Max (64 GB): ~10.5 s per 768x1344 image, 30 steps, after a one-time model download (~7 GB for the fp16 weights).</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> What you need</h2>
+      <p>An Apple-silicon Mac with 16 GB+ memory, or a PC with an NVIDIA GPU (8 GB+ VRAM), and Python 3.10+. It runs fully offline after the download and costs nothing.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Install (one time)</h2>
+      <pre><code>python3 -m venv sdxl && source sdxl/bin/activate
+pip install torch diffusers transformers accelerate safetensors pillow</code></pre>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Generate and save every step</h2>
+      <p>Save as <code>steps.py</code> and run <code>python steps.py</code>. Change the prompt or the seed; a new seed = new starting static = a different picture. On NVIDIA, replace <code>"mps"</code> with <code>"cuda"</code>.</p>
+      <pre><code>{`import torch, os
+from diffusers import StableDiffusionXLPipeline
+pipe = StableDiffusionXLPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0",
+    torch_dtype=torch.float16, variant="fp16", use_safetensors=True).to("mps")
+pipe.vae.to(torch.float32)              # decode in fp32 (fp16 VAE can give black images)
+os.makedirs("steps", exist_ok=True)
+
+def save(lat, path):
+    with torch.no_grad():
+        x = pipe.vae.decode(lat.float() / pipe.vae.config.scaling_factor).sample
+    x = ((x[0].clamp(-1, 1) + 1) * 127.5).byte().permute(1, 2, 0).cpu().numpy()
+    from PIL import Image; Image.fromarray(x).save(path)
+
+def each_step(p, i, t, kw):              # called after every denoising step
+    sigma = float(p.scheduler.sigmas[i + 1])
+    save(kw["latents"] / (sigma ** 2 + 1) ** 0.5, f"steps/step{i+1:02d}.png")
+    return kw
+
+g = torch.Generator("cpu").manual_seed(7)
+pipe("a red fox standing in a snowy pine forest at golden hour, cinematic wildlife photograph",
+     width=768, height=1344, num_inference_steps=30, guidance_scale=7.0,
+     generator=g, callback_on_step_end=each_step)`}</code></pre>
+      <p>Open the <code>steps</code> folder: step01 is static, around step15 the shape appears, step30 is the finished image. Turn them into a clip with <code>ffmpeg -framerate 12 -i steps/step%02d.png steps.mp4</code>.</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> How it works, in three lines</h2>
+      <p>Training: millions of images get noise added at random strengths and the network learns to predict that noise. Generating: start from pure random noise (set by the seed) and remove a little at a time. Your prompt is turned into numbers by two text encoders, and every step is steered toward them.</p>
+      <p class="label"><a href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0">Hugging Face: SDXL base 1.0 (license CreativeML Open RAIL++-M)</a> · <a href="https://huggingface.co/docs/diffusers/using-diffusers/callback">diffusers: pipeline callbacks</a> · <a href="https://arxiv.org/abs/2006.11239">DDPM paper</a></p>
+    </section>
+  </main>
+</PackLayout>

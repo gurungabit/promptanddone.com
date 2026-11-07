@@ -1,0 +1,33 @@
+---
+// promptanddone.com/claude-image-tokens: the TILES pack (DM deliverable for the "how-claude-sees-images" reel). /go/tiles redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="How Claude sees images: the token formula + the crop tip — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · TILES</p>
+      <h1>Claude reads your image as tiles. Here's what that costs, and how to get it read right</h1>
+      <p class="tag">Claude doesn't look at a picture the way you do. It cuts the image into 28×28-pixel patches ("visual tokens") and reads those, like words.</p>
+      <p class="note">Checked 7 Nov 2026 against Anthropic's vision docs and our own test in Claude Code 2.1.319.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The token formula</h2>
+      <pre><code>visual tokens = ceil(width / 28) × ceil(height / 28)</code></pre>
+      <p>Example: an 800×500 image = 29 × 18 = 522 tokens. A 1000×1000 image = 1,296 tokens.</p>
+      <p>Too big? It gets shrunk first. Claude 4.7 and later (high-resolution tier): long edge up to 2,576 px and up to 4,784 visual tokens. Other models: 1,568 px and 1,568 tokens. A 4K screenshot (3840×2160) is downscaled to 2576×1449 (4,784 tokens) on the high-res tier. Hard limit: 8000×8000 px; with more than 20 images in one request keep each under 3,000 px.</p>
+      <p class="label"><a href="https://platform.claude.com/docs/en/build-with-claude/vision">platform.claude.com: Vision → Resolution and token cost</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The crop tip</h2>
+      <p>When the answer is in small text (a code, an error line, a number in a table), crop to that region before you paste. Shrinking a huge screenshot blurs small text; a crop keeps it sharp and costs fewer tokens.</p>
+      <p>Our test: the same dashboard screenshot, same question ("What is the refund approval code?"). Full 6000 px image: Claude Code sent it as 1999×1133, 3,136 input tokens, answer "UNREADABLE". The 800×500 crop: 661 tokens, answer "QX7-48K2", correct. One synthetic screenshot, one model; your results will vary.</p>
+      <p>Don't over-crop: keep the context Claude needs to understand what it's looking at (Anthropic's own advice).</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> One-line check before you paste</h2>
+      <p>On a Mac, this prints an image's size and its approximate visual tokens (before any downscaling):</p>
+      <pre><code>f=shot.png; w=$(sips -g pixelWidth "$f" | awk '/pixelWidth/{'{'}print $2{'}'}'); h=$(sips -g pixelHeight "$f" | awk '/pixelHeight/{'{'}print $2{'}'}'); echo "$w x $h -> $(( (w+27)/28 * ((h+27)/28) )) tokens"</code></pre>
+      <p>Over ~2,576 px on the long edge? It will be shrunk. If you need small text read, crop first.</p>
+    </section>
+  </main>
+</PackLayout>

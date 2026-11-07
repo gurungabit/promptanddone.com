@@ -1,0 +1,71 @@
+---
+// promptanddone.com/erase-yourself: the VANISH pack (DM deliverable for the "claude-erase-digital-footprint" reel). /go/vanish redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Erase yourself from people-search sites with Claude — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · VANISH</p>
+      <h1>Get your name, address and phone off people-search sites</h1>
+      <p class="tag">One prompt to Claude returned 15 opt-out links with steps in 55 seconds, and a second prompt wrote the deletion letter. We then opened every link ourselves.</p>
+      <p class="note">Checked 7 Nov 2026 in a real browser: 10 opened, 4 sit behind bot checks we couldn't pass (they may work fine for you), 1 was dead. US-centric. Claude finds and drafts; you still submit each form and click each confirmation email. Sites re-list people, so repeat every ~3 months.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The prompt</h2>
+      <p>Paste into Claude (with web search on):</p>
+      <pre><code>Find every people-search site that lists my name, address and phone. Give me each official opt-out link and the exact steps.</code></pre>
+      <p>Then: <em>"Now write one short deletion request I can send to each of those sites (CCPA-style 'right to delete' and 'do not sell', GDPR wording as fallback). Use placeholders [FULL NAME], [CITY, STATE], [EMAIL], [LISTING URL]."</em></p>
+      <p>Tip: use a spare email address for opt-outs; most sites send a confirmation link.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The list (checked 7 Nov 2026)</h2>
+      <p>Fastest order: DROP first if you live in California, then Whitepages, TruePeopleSearch and FastPeopleSearch (they rank highest on Google), then the rest.</p>
+      <ol class="plain">
+      <li><p><strong>1. California DROP (California residents only)</strong> <span class="label">✓ opened 7 Nov</span><br/><a href="https://privacy.ca.gov/drop/">privacy.ca.gov/drop/</a></p><p>One request to over 600 registered data brokers. Check eligibility, verify you live in California, submit one deletion request. Brokers must check DROP every 45 days (since 1 Aug 2026); status updates can take up to 90 days.</p></li>
+      <li><p><strong>2. Whitepages</strong> <span class="label">✓ opened 7 Nov</span><br/><a href="https://www.whitepages.com/suppression-requests">www.whitepages.com/suppression-requests</a></p><p>Find your listing on whitepages.com and copy its URL. Paste it into the form (step 1 of 5), then verify by the phone call to the listed number. Repeat per listing.</p></li>
+      <li><p><strong>3. TruePeopleSearch</strong> <span class="label">? bot check, couldn't confirm</span><br/><a href="https://www.truepeoplesearch.com/removal">www.truepeoplesearch.com/removal</a></p><p>Enter name + email, pass the CAPTCHA, click the emailed link, pick your record and remove it.</p></li>
+      <li><p><strong>4. FastPeopleSearch</strong> <span class="label">✓ opened 7 Nov</span><br/><a href="https://www.fastpeoplesearch.com/removal">www.fastpeoplesearch.com/removal</a></p><p>Enter name + email + CAPTCHA. Click the emailed link within 24 hours, fill the form to match your record, submit. Allow 3 days.</p></li>
+      <li><p><strong>5. Spokeo</strong> <span class="label">✓ opened 7 Nov</span><br/><a href="https://www.spokeo.com/optout">www.spokeo.com/optout</a></p><p>Search your name on Spokeo and copy each listing URL. Paste it with your email, then click the confirmation link in the email (the listing stays up if you skip it).</p></li>
+      <li><p><strong>6. BeenVerified</strong> <span class="label">? bot check, couldn't confirm</span><br/><a href="https://www.beenverified.com/app/optout/search">www.beenverified.com/app/optout/search</a></p><p>Search your name + state, pick your record, enter your email, click 'Verify Opt-Out' in the email.</p></li>
+      <li><p><strong>7. PeopleConnect (Intelius, TruthFinder, Instant Checkmate, US Search)</strong> <span class="label">✓ opened 7 Nov</span><br/><a href="https://suppression.peopleconnect.us/login">suppression.peopleconnect.us/login</a></p><p>Sign in with an emailed code, find and suppress every record that's yours. One request covers the sister sites.</p></li>
+      <li><p><strong>8. CyberBackgroundChecks</strong> <span class="label">? bot check, couldn't confirm</span><br/><a href="https://www.cyberbackgroundchecks.com/removal">www.cyberbackgroundchecks.com/removal</a></p><p>Enter name + email + CAPTCHA, open the emailed link, pick your record, submit.</p></li>
+      <li><p><strong>9. SearchPeopleFree</strong> <span class="label">✓ opened 7 Nov</span><br/><a href="https://www.searchpeoplefree.com/opt-out">www.searchpeoplefree.com/opt-out</a></p><p>Enter your email and confirm it, then find your record and remove it.</p></li>
+      <li><p><strong>10. AdvancedBackgroundChecks</strong> <span class="label">✓ opened 7 Nov</span><br/><a href="https://www.advancedbackgroundchecks.com/opt-out">www.advancedbackgroundchecks.com/opt-out</a></p><p>Search your name, select your record, confirm removal.</p></li>
+      <li><p><strong>11. Nuwber</strong> <span class="label">? bot check, couldn't confirm</span><br/><a href="https://nuwber.com/optout">nuwber.com/optout</a></p><p>Paste your listing URL and email, click the link in the email.</p></li>
+      <li><p><strong>12. USPhonebook</strong> <span class="label">✓ opened 7 Nov</span><br/><a href="https://www.usphonebook.com/removal">www.usphonebook.com/removal</a></p><p>Search your name or number, pick your record, submit the opt-out form.</p></li>
+      <li><p><strong>13. PeopleFinders</strong> <span class="label">✓ opened 7 Nov</span><br/><a href="https://www.peoplefinders.com/manage">www.peoplefinders.com/manage</a></p><p>Find and select your record, confirm by email.</p></li>
+      <li><p><strong>14. FamilyTreeNow</strong> <span class="label">✗ dead link</span><br/>(Claude's link familytreenow.com/opt-out returned 404)</p><p>Claude's link was dead when we checked. Look for the opt-out link in the site's footer instead.</p></li>
+      <li><p><strong>15. MyLife</strong> <span class="label">✓ opened 7 Nov</span><br/><a href="https://www.mylife.com/privacyrequest">www.mylife.com/privacyrequest</a></p><p>Fill in the privacy request form and choose deletion; they may confirm by email or phone. Removal is free: ignore the upsell.</p></li>
+      </ol>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> The deletion letter</h2>
+      <p>For sites with a privacy email or a free-text box. Most use the forms above instead.</p>
+      <pre><code>Subject: Request to delete my personal information and stop selling it
+
+To the privacy team,
+
+Please delete all personal information you hold about me and remove my listing at [LISTING URL].
+
+Name: [FULL NAME]
+Location: [CITY, STATE]
+Email: [EMAIL]
+
+Under the California Consumer Privacy Act (Cal. Civ. Code §1798.105 and §1798.120), I ask that you:
+
+1. Delete my personal information, including every listing, profile and copy.
+2. Stop selling or sharing my personal information.
+3. Tell any third parties you shared it with to delete it.
+
+If the CCPA does not apply to me, please treat this as an erasure request under Article 17 of the GDPR, or under any other privacy law that applies to me.
+
+Please confirm in writing, within the deadline the law sets, once you have done this. Use these details only to process this request.
+
+[FULL NAME]</code></pre>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> Keep it gone</h2>
+      <p>Set a reminder every 3 months: rerun the prompt, search your name again, and redo any site that re-listed you. Then check Google's "Results about you" for leftovers.</p>
+    </section>
+  </main>
+</PackLayout>

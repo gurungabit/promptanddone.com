@@ -1,0 +1,36 @@
+---
+// promptanddone.com/worktrunk: the WORKTRUNK pack (DM deliverable for the "worktrunk-parallel-agents" reel). /go/worktrunk redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Run 3 Claude Code agents in parallel with Worktrunk — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · WORKTRUNK</p>
+      <h1>Run several Claude Code agents at once, each on its own copy of your repo</h1>
+      <p class="tag">Worktrunk is a free, open-source CLI (MIT or Apache-2.0) by Maximilian Roos. One command creates a git worktree (a separate working folder on its own branch) and starts Claude Code in it. When the agent is done, one command merges it back into main.</p>
+      <p class="note">Tested 7 Nov 2026 on macOS: Worktrunk 0.81.0, Claude Code 2.1.319. Three agents built three sections of one landing page in 61 seconds; three merges, zero conflicts.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install</h2>
+      <pre><code>brew install worktrunk
+wt config shell install   # optional: lets wt cd you into worktrees</code></pre>
+      <p>Other installs (cargo, Windows): <a href="https://worktrunk.dev">worktrunk.dev</a>. You also need Claude Code, logged in with your own plan: every agent uses your usage.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> One agent per task</h2>
+      <p>From inside your repo, one line per task (each opens Claude Code in its own worktree; run them in separate terminal tabs):</p>
+      <pre><code>wt switch -c hero -x claude -- 'Build the hero section'
+wt switch -c pricing -x claude -- 'Build the pricing section'
+wt switch -c reviews -x claude -- 'Build the reviews section'</code></pre>
+      <p>Check them all: <code>wt list</code> shows every worktree, its branch and how many lines it changed.</p>
+      <p>What we ran (headless, all three in the background): <code>wt switch -c hero --no-cd -y -x claude -- -p "…" --permission-mode acceptEdits &amp;</code></p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Merge back</h2>
+      <pre><code>wt merge   # run inside each finished worktree</code></pre>
+      <p>It commits, squashes, rebases onto main, fast-forwards main and removes the worktree and branch. Tip: give agents separate files or sections. Ours didn't overlap, so all three merges were clean; if two agents edit the same lines you resolve the conflict like any git rebase.</p>
+      <p class="label"><a href="https://github.com/max-sixty/worktrunk">github.com/max-sixty/worktrunk</a> · <a href="https://worktrunk.dev">worktrunk.dev</a></p>
+    </section>
+    <p class="note">Reel narration built with Fish Audio.</p>
+  </main>
+</PackLayout>

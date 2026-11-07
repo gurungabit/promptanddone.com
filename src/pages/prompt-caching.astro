@@ -1,0 +1,39 @@
+---
+// promptanddone.com/prompt-caching: the CACHEIT pack (DM deliverable for the "prompt-caching-explained" reel). /go/cacheit redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Prompt caching: my test script + the 3-line rule — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · CACHEIT</p>
+      <h1>Why Claude's second answer costs less (and how to keep it that way)</h1>
+      <p class="tag">I sent Claude Sonnet 5.5 the same ~20-page document (26,979 tokens) three times. Send 1: $0.109. Send 2, same document: $0.007. Send 3, one word changed in the first line: $0.109 again. Costs are API list prices computed from the usage the API returned.</p>
+      <p class="note">Tested 7 Nov 2026. Prices and cache rules checked the same night on platform.claude.com (pricing + prompt caching docs).</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The 3-line rule</h2>
+      <ol>
+        <li><strong>Stable stuff first:</strong> instructions, tool list, long documents, examples. Never put a timestamp, a user name or a random ID up top.</li>
+        <li><strong>Changing stuff last:</strong> the new question, today's date, per-user details go after the cached part.</li>
+        <li><strong>Don't edit the top:</strong> one changed byte early in the prompt and everything after it is read fresh (that's my send 3).</li>
+      </ol>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Run my test yourself</h2>
+      <p>With Claude Code installed (it calls the API with caching on and prints the raw <code>usage</code>):</p>
+      <pre><code>Q="In one sentence: what is this document about?"
+claude -p "$Q" --system-prompt-file doc.md --tools "" --model sonnet --no-session-persistence --output-format json &gt; run1.json
+claude -p "$Q" --system-prompt-file doc.md --tools "" --model sonnet --no-session-persistence --output-format json &gt; run2.json
+# change one word in the first line of doc.md, save as doc-changed.md
+claude -p "$Q" --system-prompt-file doc-changed.md --tools "" --model sonnet --no-session-persistence --output-format json &gt; run3.json</code></pre>
+      <p>In each file read <code>usage.cache_creation_input_tokens</code> (written to the cache), <code>usage.cache_read_input_tokens</code> (read from it) and <code>usage.input_tokens</code> (not cached). Use any document of 512+ tokens (the minimum Sonnet 5.5 caches).</p>
+      <p>On the API directly: add <code>{`cache_control: {"type": "ephemeral"}`}</code> at the top level of the request (or on the last block you want cached) and compare the same fields.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> The numbers (Claude Sonnet 5.5, per million tokens)</h2>
+      <p>Input $2 · cache write $2.50 (5-minute) or $4 (1-hour) · cache read $0.10 · output $10. The cache lives 5 minutes by default and every hit refreshes it; Claude Code writes 1-hour entries.</p>
+      <p>My sends: 1) 26,979 written + 117 out = $0.109 · 2) 26,314 read + 663 written + 165 out = $0.0069 · 3) 26,977 written + 116 out = $0.109.</p>
+      <p class="label"><a href="https://platform.claude.com/docs/en/about-claude/pricing">platform.claude.com: pricing</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">platform.claude.com: prompt caching</a></p>
+    </section>
+  </main>
+</PackLayout>

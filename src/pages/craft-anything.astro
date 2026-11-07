@@ -1,0 +1,31 @@
+---
+// promptanddone.com/craft-anything: the CRAFTIT pack (DM deliverable for the "craft-anything-clone-any-site" reel). /go/craftit redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Clone your own site with Craft Anything + Claude Code — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · CRAFTIT</p>
+      <h1>Craft Anything: point it at a site, Claude Code builds your own version</h1>
+      <p class="tag">Free, open-source app (MIT or Apache-2.0, early alpha). It studies a website at three screen widths, has a coding agent build a new project, compares the result with the original and refines it. We ran it on our own site, promptanddone.com: 10 min 14 s, about 94% alike by its own check.</p>
+      <p class="note">Tested 7 Nov 2026 on macOS with Craft Anything 0.5.0 and Claude Code 2.1.319.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install</h2>
+      <p>Download the app or the CLI for your system from the <a href="https://github.com/storytold/craft-anything/releases">Releases page</a> (macOS: <code>craft-anything-0.5.0-macos-universal.dmg</code> or <code>craft-anything-cli-0.5.0-macos-universal.zip</code>; Windows, Linux and FreeBSD builds too). Building needs a coding agent signed in on your computer: Claude Code is supported first (it runs your own <code>claude</code> with your own login). Check with:</p>
+      <pre><code>craft-anything-cli doctor</code></pre>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The one line we ran</h2>
+      <pre><code>craft-anything-cli rebuild https://your-site.com "Recreate this website" --backend "Claude Code"</code></pre>
+      <p>In the app: Make → Website → paste the address → say what you want → Start. The project folder (Documents/Craft Anything) holds <code>capture/</code> (what it recorded), <code>app/</code> (your new site), <code>checks/</code> (each comparison with the original).</p>
+      <p>Our run: 5 pages, 19 source files, ~$2.84 of API-equivalent usage (3.3M input tokens) billed to a Claude subscription, not an API key. Weakest page: a phone-width layout at 70%; the start page scored 95%.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Know before you clone</h2>
+      <p><strong>Clean room</strong> (the default) only uses what a visitor sees: screenshots, visible text, measured layout. It never reads the page's code. <strong>Deep</strong> mode reads everything and is meant for your private use.</p>
+      <p>Clone sites you own or have the rights to. A copy of someone else's brand, text or design can still infringe, even if it was rebuilt from scratch.</p>
+      <p class="label"><a href="https://github.com/storytold/craft-anything">github.com/storytold/craft-anything</a></p>
+    </section>
+  </main>
+</PackLayout>

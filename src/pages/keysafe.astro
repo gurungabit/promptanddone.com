@@ -1,0 +1,39 @@
+---
+// promptanddone.com/keysafe: the KEYSAFE pack (DM deliverable for the "deleted-api-key-still-in-git" reel). /go/keysafe redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Keep API keys out of Git (and what to do if one leaked) — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · KEYSAFE</p>
+      <h1>Keep API keys out of Git, and what to do if one already leaked</h1>
+      <p class="tag">Deleting a key in a new commit doesn't remove it: every commit is a snapshot, so the commit before still has it. We tested it on 7 Nov 2026 in a local repo with a fake key: <code>git show HEAD~1:app.py</code> printed the key after the delete.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The setup (do this before the first commit)</h2>
+      <pre><code>echo ".env" &gt;&gt; .gitignore
+echo "OPENAI_API_KEY=sk-..." &gt;&gt; .env
+git check-ignore -v .env      # must print .gitignore:1:.env
+git status --short --ignored  # .env shows as !! (ignored)</code></pre>
+      <p>Read it in code from the environment. Python: <code>pip install python-dotenv</code>, then <code>from dotenv import load_dotenv; load_dotenv(); key = os.environ["OPENAI_API_KEY"]</code>. Node 20+: <code>node --env-file=.env app.js</code> and <code>process.env.OPENAI_API_KEY</code>.</p>
+      <p>Commit a <code>.env.example</code> with the variable names and no values, so others know what to set. Using Claude Code or another agent? Add to your CLAUDE.md: <em>"Never write secrets into source files; read them from environment variables in .env."</em></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Check your history</h2>
+      <pre><code>git log -p -S "sk-" --all     # every commit that added or removed the string
+git grep "sk-" $(git rev-list --all)</code></pre>
+      <p>Swap <code>sk-</code> for your provider's key prefix. Anything that shows up is in your history, even if it's gone from the current files.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> If a key leaked: the checklist</h2>
+      <ol>
+        <li><strong>Revoke it</strong> in the provider's dashboard (OpenAI, Anthropic, Stripe...). Deleting the line does nothing for a key that's already out.</li>
+        <li><strong>Make a new key</strong> and put it only in <code>.env</code>.</li>
+        <li><strong>Check usage and billing</strong> on the old key for anything you didn't do.</li>
+        <li>Optionally rewrite history (<code>git filter-repo</code>) and force-push; GitHub notes copies may still exist elsewhere (forks, clones), which is why revoking comes first.</li>
+      </ol>
+      <p>On public repos GitHub runs secret scanning automatically and, for partner key formats, notifies the provider. Don't count on it to protect you: anyone can clone a public repo's history.</p>
+      <p class="label"><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository">docs.github.com: removing sensitive data</a> · <a href="https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning">docs.github.com: about secret scanning</a> · <a href="https://git-scm.com/docs/gitignore">git-scm.com: gitignore</a></p>
+    </section>
+  </main>
+</PackLayout>

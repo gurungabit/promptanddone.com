@@ -1,0 +1,51 @@
+---
+// promptanddone.com/git-undo-sheet: the UNDOIT pack (DM deliverable for the "git-time-machine-for-claude" reel). /go/undoit redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Undo anything Claude does: 5 git commands + the safe workflow — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · UNDOIT</p>
+      <h1>Undo anything Claude does to your project: 5 git commands</h1>
+      <p class="tag">A commit is a photo of your whole project folder. Take one before you let Claude run, and any change it makes can be rolled back. We tested it on 7 Nov 2026: Claude Code rewrote our 3-commit coffee site as a neon app (7 files changed, 592 lines added), and <code>git restore .</code> brought the page back exactly as it was.</p>
+      <p class="note">Run these in your project folder, in a terminal. Never used git there? Start with <code>git init</code> once.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Take the photo: commit</h2>
+      <pre><code>git add -A
+git commit -m "works: before Claude"</code></pre>
+      <p>Do this every time something works. Or just tell Claude Code: <em>"commit what we have with a clear message"</em>. It runs git for you.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> See what changed</h2>
+      <pre><code>git status
+git diff --stat</code></pre>
+      <p><code>git status</code> lists changed files and new ones (<code>??</code>). <code>git diff --stat</code> counts the changed lines in files git already knows.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Bring the last photo back</h2>
+      <pre><code>git restore .</code></pre>
+      <p>Puts every tracked file back to the last commit. New files Claude created stay. See them with <code>git clean -n</code> (dry run), then delete them with <code>git clean -fd</code> only if that list is what you expect. Not sure? <code>git stash -u</code> sets everything aside instead, and <code>git stash pop</code> brings it back.</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> Try risky ideas on a branch</h2>
+      <pre><code>git switch -c try-redesign
+# let Claude go wild, commit on this branch
+git switch main     # your safe version, untouched</code></pre>
+      <p>Liked it? <code>git merge try-redesign</code> from main.</p>
+    </section>
+    <section class="card" aria-labelledby="s5">
+      <h2 id="s5"><span class="n">5</span> Find an older photo</h2>
+      <pre><code>git log --oneline
+git restore --source=&lt;commit-id&gt; .</code></pre>
+      <p>The first lists your save points, newest first. The second puts your files back as they were at that commit (commit first if you want to keep what you have now).</p>
+      <p class="label">Careful: <code>git reset --hard</code> also throws away uncommitted work, with no undo. You don't need it for any of the above.</p>
+    </section>
+    <section class="card" aria-labelledby="s6">
+      <h2 id="s6"><span class="n">+</span> The safe workflow with Claude Code</h2>
+      <p>1) Commit before every big prompt. 2) Risky change? Branch first. 3) After Claude finishes, read <code>git diff --stat</code> before you keep it. 4) Ask Claude to commit each working step.</p>
+      <p>Claude Code also has checkpoints: press <code>Esc</code> twice or type <code>/rewind</code> to roll back its file edits. They're session-level, don't track changes made by shell commands, and the docs say to keep using git for real history.</p>
+      <p class="label"><a href="https://code.claude.com/docs/en/checkpointing">code.claude.com: Checkpointing</a> · <a href="https://git-scm.com/docs/git-restore">git-scm.com: git restore</a> · <a href="https://git-scm.com/docs/git-switch">git switch</a></p>
+    </section>
+  </main>
+</PackLayout>

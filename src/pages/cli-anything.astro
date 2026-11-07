@@ -1,0 +1,32 @@
+---
+// promptanddone.com/cli-anything: the ANYAPP pack (DM deliverable for the "cli-anything-claude-drives-apps" reel). /go/anyapp redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Let Claude Code drive Blender (and 78 other apps) with CLI-Anything — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · ANYAPP</p>
+      <h1>Let Claude Code drive Blender from one sentence, no MCP</h1>
+      <p class="tag">CLI-Anything (HKUDS, free, Apache-2.0) turns desktop apps into command-line tools an AI agent can run. Its CLI-Hub has 79 ready-made ones (Blender, GIMP, Audacity, OBS, LibreOffice, Inkscape...). We gave Claude Code one sentence; it ran 165 Blender commands and rendered a lighthouse scene in 4 min 43 s.</p>
+      <p class="note">Tested 7 Nov 2026 on a Mac with Blender 5.2.3, Python 3.11, Claude Code (Opus 5.5).</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install (2 minutes)</h2>
+      <p>You need the app itself installed (here: <a href="https://www.blender.org">Blender</a>, free) and Python 3.10+.</p>
+      <pre><code>pip install cli-anything-hub
+cli-hub install blender
+npx skills add HKUDS/CLI-Anything --skill cli-anything-blender -g -y</code></pre>
+      <p>On macOS, put Blender on your PATH (an alias isn't enough): <code>ln -s /Applications/Blender.app/Contents/MacOS/Blender /usr/local/bin/blender</code>.</p>
+      <p class="label"><a href="https://github.com/HKUDS/CLI-Anything">github.com/HKUDS/CLI-Anything</a> · <a href="https://hkuds.github.io/CLI-Anything/">CLI-Hub</a></p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Our exact prompt</h2>
+      <pre><code>claude -p "Using the cli-anything-blender CLI, build a 3D scene of a red-and-white lighthouse on a small rocky island in a calm sea at golden-hour sunset, with its lamp glowing and two little sailboats nearby, then render it in portrait to lighthouse.png."</code></pre>
+      <p>What happened: Claude read the CLI's help, wrote a build script of 165 <code>cli-anything-blender</code> commands (37 objects, 35 materials, 4 lights, a camera), checked two low-res previews, fixed what it saw, then rendered in Cycles.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Good to know</h2>
+      <p>The Blender CLI has no sky/world command, so Claude faked the sunset with glowing panels (you can see the bands). Its <code>render execute</code> writes a Blender script rather than rendering; Claude ran that script with Blender itself. Some hub CLIs are lighter wrappers (the GIMP one renders with Pillow by default). For an app that isn't in the hub, the <code>/cli-anything</code> plugin generates a new CLI from the app's source code (a longer, 7-phase job).</p>
+    </section>
+  </main>
+</PackLayout>
