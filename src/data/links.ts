@@ -1030,4 +1030,13 @@ export const tools: Tool[] = [
     event: 'click-tool-automode',
     kind: 'tool',
   },
+  {
+    label: 'AGENT: how Claude Code runs my 5 channels',
+    href: 'https://promptanddone.com/go/agent/',
+    ariaLabel: 'Get the AGENT setup — REELKIT, the CLAUDE.md and rules templates, and what runs on its own',
+    description: 'The setup behind 5 short-form channels: the free REELKIT to make reels, a CLAUDE.md pipeline skeleton, a rules template, and what is automated (posting, keyword replies and DMs with Replybeam).',
+    external: false,
+    event: 'click-tool-agent',
+    kind: 'tool',
+  },
 ];

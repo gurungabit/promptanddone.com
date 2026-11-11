@@ -1,0 +1,157 @@
+---
+// promptanddone.com/claude-runs-five-channels: the AGENT pack ("the setup") for the "claude-runs-five-channels" reel. /go/agent redirects here.
+// r6 (10 Nov 2026): REELKIT download first, then Replybeam (the owner's own tool, disclosed), what is automated, copyable templates.
+// Replybeam facts: replybeam.app landing (checked 10 Nov 2026) + replybeam/PRODUCT.md. REELKIT facts: promptanddone.com/reelkit.
+import PackLayout from '../layouts/PackLayout.astro';
+const rulesTemplate = `# <short rule name>
+
+<The rule in one sentence: what to always do, or never do.>
+
+**Why:** <what happened that made this a rule: the date, and your own words
+if you said something when you corrected it.>
+
+**How to apply:** <when it kicks in and what to do instead, concrete enough
+that a fresh session can follow it without asking you.>`;
+const claudeMd = `# <Channel name>: how a reel gets made
+
+Read this file and every file in rules/ at the start of each session.
+"Make a reel" always runs the steps below, in order. Don't skip a gate.
+
+## Rules
+- When I correct you, save the correction as a new file in rules/
+  (the rule, Why, How to apply) and follow it from then on.
+- Every claim and number in a script needs a source in sources.md.
+- Never post, schedule or send anything without my OK for that reel.
+
+## Pipeline
+1. Research: pick a topic people already watch; write reels/<slug>/sources.md.
+2. Script: one spoken paragraph; each claim points to a row in sources.md.
+3. Voice: text to speech, then speech to text; keep only takes that
+   match the script word for word.
+4. Scenes: built in code and rendered frame by frame.
+5. Captions: timed word by word from the voice.
+6. QA gate: run the checks on the finished file; fix and re-run until
+   every line says PASS.
+7. Package: caption, title, cover. Then stop and show me.
+8. After my OK: schedule it in the next free slot and prepare the
+   keyword reply + DM for my yes.
+
+## QA checks (all must PASS)
+- length is inside <your range>
+- loudness about -14 LUFS
+- first frame is not blank
+- captions match the speech
+- speech to text equals the script`;
+---
+<PackLayout title="The setup: how Claude Code runs my 5 short-form channels — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · AGENT</p>
+      <h1>The setup: make the reels with Claude Code, then let posting and replies run on their own</h1>
+      <p class="tag">Start with the free kit below to make your first reel. Then the two things that run without me, and the files that keep Claude on track.</p>
+      <p class="note">Numbers checked 10 Nov 2026: 5 channels, a post every morning on each (Nov 11–17), 141 posts scheduled, 65 Replybeam automations running, 405,200 views over 463 tracked posts (Instagram + YouTube + Facebook).</p>
+    </header>
+
+    <section class="card" aria-labelledby="kit">
+      <h2 id="kit">Download this first: REELKIT, the kit to make the reels</h2>
+      <p>A free, open-source (MIT) starter kit: Claude Code researches and writes the script, a local AI voice reads it, Whisper checks every word, and a 3D scene renders frame by frame into a finished vertical video.</p>
+      <p>16 automated checks run on the final file, then you watch it and decide. The kit never posts.</p>
+      <div class="btns">
+        <a class="go" href="https://promptanddone.com/downloads/reelkit-v1.zip" download data-umami-event="agent-reelkit-download">Download reelkit-v1.zip</a>
+      </div>
+      <p class="note">Setup, the first prompt and the full stack: <a href="https://promptanddone.com/reelkit">promptanddone.com/reelkit</a>. Claude Code itself needs a paid Claude plan.</p>
+    </section>
+
+    <section class="card" aria-labelledby="rb">
+      <h2 id="rb">Replybeam: the comment replies and DMs (my own tool)</h2>
+      <p>When someone comments your keyword, Replybeam replies to them publicly and sends your DM with the link. Automatically, in your own words: every reply and DM is written by you, never generated.</p>
+      <p><strong>Free plan:</strong> $0 a month, no credit card. 2 running automations, 1,000 DMs a month, all four triggers (post comments, story replies, story mentions, DM keywords), link tracking and analytics, and the missed-comments and activity log. DMs on the free plan end with “Sent via Replybeam.app”. Pro is $9 a month (or $90 a year): unlimited running automations, no monthly DM limit and no “Sent via Replybeam.app” line.</p>
+      <div class="btns">
+        <a class="go" href="https://replybeam.app/?utm_source=promptanddone&amp;utm_medium=agent&amp;utm_campaign=claude-runs-five-channels" target="_blank" rel="noopener" data-umami-event="agent-replybeam">Try Replybeam free: replybeam.app</a>
+      </div>
+      <p class="note">Disclosure: I built Replybeam; it's my product. You connect through Instagram's own login, no password. Not affiliated with Instagram or Meta.</p>
+    </section>
+
+    <section class="card" aria-labelledby="auto">
+      <h2 id="auto">What runs on its own once a reel is made</h2>
+      <ul>
+        <li><strong>Posting.</strong> Each finished reel goes into the calendar at a slot (five morning slots, one per channel) and publishes by itself at that time.</li>
+        <li><strong>Keyword replies and DMs.</strong> When someone comments the reel's keyword, Replybeam posts a public reply and sends the DM with the link. Nobody presses send.</li>
+      </ul>
+      <p>What isn't automatic: I approve every reel, and I say yes before each automation goes live. Comments without the keyword are not answered automatically.</p>
+    </section>
+
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Claude Code + one repo per channel</h2>
+      <p>Each channel is its own folder (a git repo) that Claude Code works in. The channel's voice, look, rules and audience live there, so Claude never mixes two brands.</p>
+      <p>The real prompt that started one reel was a single sentence: <em>"Make me one mind blowing reel, insane quality people would think they spent millions"</em>. Claude Code then made 106 tool calls over 58 minutes (research, script, voice, animation, checks) with no other typed prompt.</p>
+    </section>
+
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> A CLAUDE.md that is the pipeline</h2>
+      <p class="sub">Claude Code reads <code>CLAUDE.md</code> at the start of every session, so "make a reel" always runs the same way. Paste this skeleton into your repo and replace the <code>&lt;...&gt;</code> parts (or start with Claude Code's <code>/init</code> and add these sections).</p>
+      <pre class="block">{claudeMd}</pre>
+      <button class="copy" type="button" data-k="claudeMd">Copy CLAUDE.md</button>
+    </section>
+
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> A rules file it writes to itself</h2>
+      <p class="sub">When you correct it, have Claude save the correction as one small file in <code>rules/</code> that it reads every session. The template:</p>
+      <pre class="block">{rulesTemplate}</pre>
+      <button class="copy" type="button" data-k="rulesTemplate">Copy rules template</button>
+      <p>The real one from the reel, written after I rejected three copycat reels:</p>
+      <pre><code>After SF Milk hit 12k, I built 3 more "Who leaves ONE…" copies.
+The owner rejected and deleted them (8 Nov 2026): "why does it have
+to be same thing over and over… people will leave".
+
+How to apply: follow a winning format with at most 1–2 close
+follow-ups. After that, each new reel needs a different premise,
+comedy mechanic and staging.</code></pre>
+    </section>
+
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> A QA gate before anything ships</h2>
+      <p>A script checks the finished video, and a reel only moves on when every line says PASS. The real check from one Stickfigure reel (8 of 8 passed):</p>
+      <pre><code>PASS  duration  18.09 s
+PASS  loudness  -14.2 LUFS, true peak -3.7 dBTP
+PASS  frame 1   moving
+PASS  captions  all script words in order
+PASS  sync      95th pct 17 ms
+PASS  asr       WER 0.000 vs the script
+PASS  post      title 40 chars
+PASS  cover     text inside the grid crop</code></pre>
+      <p>Good first checks: length, loudness (about -14 LUFS), the first frame isn't blank, captions match the speech, and a speech-to-text pass equals your script. REELKIT ships with 16 of them.</p>
+    </section>
+
+    <section class="card" aria-labelledby="s5">
+      <h2 id="s5"><span class="n">5</span> A scheduler with an API</h2>
+      <p>Finished reels go into a scheduling tool through its API, so Claude can fill the calendar itself (we keep five morning slots, one per channel). Any scheduler with an API or an MCP server works; give Claude the key in an environment variable, never in the repo.</p>
+    </section>
+
+    <section class="card" aria-labelledby="s6">
+      <h2 id="s6"><span class="n">6</span> Setting up the Replybeam automation from Claude Code</h2>
+      <p>On Replybeam's Pro plan, its AI connector (MCP) lets Claude create the keyword automation for each reel. The DM text and replies are still the ones you wrote. A real call (5 Nov 2026, shortened):</p>
+      <pre><code>create_automation
+  trigger: post_comments   keywords: SEED, SEEDS
+  dm_message: "Hey {"{username}"}! Here's the world from the reel…"
+  public_replies: "Sent! Check your DMs", …
+→ "It's running: matching comments and messages get answered from now on."</code></pre>
+      <p>On the free plan you set up the same automation in the app yourself. Either way, keep a human yes before an automation goes live: once it's on, real people get the message.</p>
+    </section>
+
+    <section class="card" aria-labelledby="s7">
+      <h2 id="s7"><span class="n">7</span> What it doesn't do</h2>
+      <p>It doesn't decide what's good: I still judge every reel and say no when it's wrong (that's where the rules come from). The 405,200 views are spread over 463 posts, not one viral reel.</p>
+    </section>
+  </main>
+</PackLayout>
+<script define:vars={{ texts: { claudeMd, rulesTemplate } }}>
+  document.querySelectorAll('.copy').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const label = btn.textContent;
+      try { await navigator.clipboard.writeText(texts[btn.dataset.k]); btn.textContent = 'Copied ✓'; }
+      catch { btn.textContent = 'Select and copy manually'; }
+      setTimeout(() => { btn.textContent = label; }, 1800);
+    });
+  });
+</script>
