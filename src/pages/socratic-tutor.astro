@@ -1,0 +1,32 @@
+---
+// promptanddone.com/socratic-tutor: the TUTOR pack (DM deliverable for the "socratic-tutor-skill" reel). /go/tutor redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Socratic Tutor: make Claude teach you with questions — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · TUTOR</p>
+      <h1>Socratic Tutor: one skill file that makes Claude quiz you instead of lecturing</h1>
+      <p class="tag">A free skill (MIT) from Jane Street's <code>agent_skills</code> repo. Ask it to teach you something and it breaks the topic into 4-10 subskills scored 0-5, runs a short diagnostic, then asks one question at a time and re-tests earlier material without warning. Same request without it: we got a 764-word lecture.</p>
+      <p class="note">Tested 12 Nov 2026 in Claude Code 2.1.322 with Claude Opus 5.5 (13 turns; we played the learner).</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install (Claude Code)</h2>
+      <p>The skill is one folder. Copy it into your project's skills folder (or <code>~/.claude/skills/</code> for every project):</p>
+      <pre><code>git clone https://github.com/janestreet/agent_skills.git
+mkdir -p .claude/skills
+cp -R agent_skills/socratic-tutor .claude/skills/</code></pre>
+      <p>Any plain chatbot works too: paste the body of <code>SKILL.md</code> into the chat or a custom instruction, then say what you want to learn.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Start a session</h2>
+      <pre><code>Teach me how an AI's context window works.</code></pre>
+      <p>Trigger phrases from the file: "teach me", "tutor me", "quiz me", "drill me", "help me master". A one-off "explain X" gets a normal answer. Commands any time: <code>show progress</code>, <code>harder</code> / <code>easier</code>, <code>just tell me</code>, <code>save state</code>, <code>resume from:</code>.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> What our session looked like</h2>
+      <p>8 subskills; after the 5-question diagnostic: overall 25%, "Statelessness" 1/5. We answered one question wrong; it didn't give the answer, it asked a narrower question (how could editing an old message work if the model stored the chat?) and we found the mistake. Three answers later Statelessness was 4/5; after 13 turns overall was 45%. These are the tutor's own ratings, not a measured learning result.</p>
+      <p class="label"><a href="https://github.com/janestreet/agent_skills/blob/master/socratic-tutor/SKILL.md">github.com/janestreet/agent_skills · socratic-tutor/SKILL.md</a></p>
+    </section>
+  </main>
+</PackLayout>

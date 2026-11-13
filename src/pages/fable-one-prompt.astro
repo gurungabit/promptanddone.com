@@ -1,0 +1,28 @@
+---
+// promptanddone.com/fable-one-prompt: the FABLE pack (DM deliverable for the "claude-fable-5-2-one-prompt" reel). /go/fable redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="One prompt, two Claude models: Fable 5.2 vs 5.1 — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · FABLE</p>
+      <h1>The one-shot prompt we gave Claude Fable 5.2 and Fable 5.1</h1>
+      <p class="tag">Same prompt, one shot each, headless in Claude Code. Both built a working, interactive 3D solar system in a single HTML file. Fable 5.2 took 27 min 11 s, Fable 5.1 took 38 min 22 s, at about the same API-equivalent price ($9.08 vs $8.53).</p>
+      <p class="note">Tested 12 Nov 2026 on macOS with Claude Code 2.1.322, effort high for both, one run each (n = 1). Costs are Claude Code's API list-price equivalent; the runs used a Claude subscription login.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The prompt</h2>
+      <pre><code>Build a stunning, interactive 3D model of our solar system in a single index.html file (no libraries, no external files, no images). The Sun and all eight planets with their real relative orbital speeds, Saturn's rings, Earth's Moon, an asteroid belt and a deep starfield. Drag to orbit the camera, pinch or scroll to zoom, tap a planet to fly to it and show its key facts. Until the first touch it plays a slow cinematic camera tour by itself. It must look great on a phone-sized portrait screen.</code></pre>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Run it yourself</h2>
+      <pre><code>claude -p "$(cat prompt.txt)" --model claude-fable-5-2 --effort high</code></pre>
+      <p>Swap in <code>claude-fable-5-1</code> (or any model) to compare. Our runs: Fable 5.2 used 154,712 output tokens in 13 turns; Fable 5.1 used 106,078 in 29 turns. Fable 5.2 lists at $8 / $40 per million input / output tokens (anthropic.com).</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> The two real outputs</h2>
+      <p><a href="/fable/fable-5-2-solar-system.html">Fable 5.2's solar system</a> (73 KB, planet dock, date readout, fact cards) · <a href="/fable/fable-5-1-solar-system.html">Fable 5.1's solar system</a> (46 KB, cinematic "now approaching" tour).</p>
+      <p>Honest notes from our headless-Chrome capture: 5.2's Mars and Jupiter close-ups showed a striped shading artefact, and 5.1's tour flies through the Sun once. Open both on your phone and judge.</p>
+    </section>
+  </main>
+</PackLayout>

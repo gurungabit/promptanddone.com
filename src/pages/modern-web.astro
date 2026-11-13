@@ -1,0 +1,39 @@
+---
+// promptanddone.com/modern-web: the MODERNWEB pack (DM deliverable for the "modern-web-guidance-2019-code" reel). /go/modernweb redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Modern Web Guidance: get your coding agent off hand-written JavaScript — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · MODERNWEB</p>
+      <h1>Modern Web Guidance: let the browser do the work your AI hand-codes</h1>
+      <p class="tag">A free skill + command-line tool from the Chrome team (stewarded with the Edge, Firefox and MDN teams; code Apache-2.0, guides CC BY 4.0). Your coding agent looks up how to build a UI piece with what browsers now do natively before it writes its own JavaScript.</p>
+      <p class="note">Tested 12 Nov 2026: Claude Code 2.1.322 with Opus 5.5, same prompt twice (plain, then with the skill loaded), JavaScript-off check in Chromium 153.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install</h2>
+      <pre><code>npx modern-web-guidance@latest install</code></pre>
+      <p>An interactive wizard. In Claude Code you can also add it as a plugin:</p>
+      <pre><code>/plugin marketplace add GoogleChrome/modern-web-guidance
+/plugin install modern-web-guidance@googlechrome</code></pre>
+      <p>Try it without installing: <code>npx modern-web-guidance@latest search "light dismiss dialog"</code>. Scan an existing project: <code>npx modern-web-guidance@latest legacy-scan .</code></p>
+      <p>The CLI sends anonymous usage data (search queries, guide IDs) to Google; opt out with <code>export DISABLE_TELEMETRY=1</code>.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> What we ran and what happened</h2>
+      <p>Prompt: a one-page coffee-subscription landing site with a signup modal (closes on Esc and outside click), a price tooltip, an FAQ and a testimonial carousel.</p>
+      <ul>
+        <li><strong>Plain Claude</strong> used <code>&lt;dialog&gt;</code> and <code>&lt;details&gt;</code> but opened the modal, closed it on outside click and showed the tooltip with hand-written JavaScript. The tool's <code>legacy-scan</code> flagged 2 legacy patterns.</li>
+        <li><strong>With the skill</strong> it used <code>commandfor</code> buttons, <code>&lt;dialog closedby="any"&gt;</code>, a <code>popover="hint"</code> tooltip with <code>interestfor</code> and CSS anchor positioning, and an animated <code>&lt;details&gt;</code>. <code>legacy-scan</code>: 0 findings.</li>
+        <li><strong>JavaScript switched off</strong> (Chromium): the plain page's pop-up and tooltip stopped working; the guided page's still opened, closed and showed. The carousel buttons need JavaScript in both.</li>
+        <li><strong>Not smaller:</strong> the guided page shipped more JavaScript (289 vs 194 lines), mostly fallbacks for browsers that lack these features.</li>
+      </ul>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Browser support (from the guides' Baseline data, 12 Nov 2026)</h2>
+      <p>Invoker commands (<code>commandfor</code>): all major browsers. <code>&lt;dialog closedby&gt;</code>: Chrome, Edge, Firefox; not Safari. <code>popover="hint"</code>: Chrome, Edge, Firefox; not Safari. Hover tooltips with <code>interestfor</code>: Chrome and Edge only. Elsewhere the skill had Claude add small JavaScript fallbacks.</p>
+      <p class="label"><a href="https://github.com/GoogleChrome/modern-web-guidance">github.com/GoogleChrome/modern-web-guidance</a> · <a href="https://developer.chrome.com/docs/modern-web-guidance">developer.chrome.com/docs/modern-web-guidance</a></p>
+      <p class="note">Narration built with Fish Audio.</p>
+    </section>
+  </main>
+</PackLayout>

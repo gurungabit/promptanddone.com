@@ -1,0 +1,33 @@
+---
+// promptanddone.com/astryx: the ASTRYX pack (DM deliverable for the "astryx-agent-design-system" reel). /go/astryx redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Build with Meta's Astryx in Claude Code — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · ASTRYX</p>
+      <h1>Astryx: Meta's design system, set up so Claude Code builds with real components</h1>
+      <p class="tag">Astryx (pronounced "asterisks") is Meta's open-source design system: typed React components, seven ready-made themes and a CLI. Its <code>init</code> writes a guide into your CLAUDE.md / AGENTS.md, so your coding agent looks components up instead of inventing its own CSS. MIT license, currently in Beta, React 19 or later.</p>
+      <p class="note">Tested 12 Nov 2026 on macOS: Claude Code 2.1.322, Opus 5.5, @astryxdesign 0.7.15, a fresh Vite + React 19 project.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Set up (in your project folder)</h2>
+      <pre><code>npm install @astryxdesign/core @astryxdesign/theme-neutral @stylexjs/stylex
+npm install -D @astryxdesign/cli
+npx @astryxdesign/cli init
+npx astryx init --agent claude</code></pre>
+      <p>The last line puts the same guide in <code>.claude/CLAUDE.md</code> for Claude Code (the plain <code>init</code> writes AGENTS.md). Use the scoped name <code>@astryxdesign/cli</code>: the unscoped <code>astryx</code> package on npm is unrelated until the CLI is installed in your project.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The one prompt we gave Claude Code</h2>
+      <pre><code>Using the Astryx design system (already installed here; follow the Astryx guide in .claude/CLAUDE.md), build a usage dashboard for my AI coding agents as the app's only screen: today's tokens, cost and runs as stat tiles, a per-agent usage breakdown, a searchable and filterable table of recent agent runs with status, and a settings panel with a model picker, a daily budget field and an auto-pause switch, plus a theme picker in the header that switches the whole UI between all seven Astryx themes. Use realistic sample data, make it polished and accessible, don't start a dev server, and make sure `npm run build` passes.</code></pre>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> What happened (same prompt, with and without Astryx)</h2>
+      <p><strong>With Astryx:</strong> 6 min 12 s, built first try, 67 look-ups in the Astryx CLI (templates, component docs, themes, a final <code>astryx doctor</code>), 0 lines of CSS written (one inline colour on a legend swatch), all seven themes (Neutral, Butter, Chocolate, Gothic, Matcha, Stone, Y2K). About $2.66 of API-equivalent usage on a Claude subscription.</p>
+      <p><strong>Without:</strong> 8 min 24 s, also first try and also good-looking, but Claude hand-wrote 1,384 lines of CSS and invented its own seven colour themes. About $2.12 API-equivalent.</p>
+      <p>Accessibility (axe-core, WCAG A/AA, our check): the Astryx build had 0 issues in 6 of 7 themes (the Chocolate theme had low-contrast text); the plain build had 3-4 small issues in every theme. Charts (<code>@astryxdesign/charts</code>) are only on the <code>@canary</code> tag for now; Claude used Recharts instead.</p>
+      <p class="label"><a href="https://github.com/meta/astryx">github.com/meta/astryx</a> · <a href="https://astryx.atmeta.com">astryx.atmeta.com</a></p>
+    </section>
+  </main>
+</PackLayout>

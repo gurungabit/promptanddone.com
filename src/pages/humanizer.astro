@@ -1,0 +1,40 @@
+---
+// promptanddone.com/humanizer: the HUMANIZE pack (DM deliverable for the "humanizer-skill-ai-writing" reel). /go/humanize redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Humanizer: strip the AI tells from your writing — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · HUMANIZE</p>
+      <h1>Humanizer: the free skill that strips the AI tells from your writing</h1>
+      <p class="tag">A free, MIT-licensed agent skill built on Wikipedia's <a href="https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing">Signs of AI writing</a> guide. It rewrites what Claude or ChatGPT drafted so it reads like a person wrote it, without changing what it says.</p>
+      <p class="note">Tested 12 Nov 2026 with Claude Code 2.1.322 and Claude Sonnet 5.5, Humanizer v4.0.0.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install</h2>
+      <p>Claude Code (2.1.142 or newer), type these two lines in a session:</p>
+      <pre><code>/plugin marketplace add blader/humanizer
+/plugin install humanizer@humanizer</code></pre>
+      <p>Older Claude Code: <code>npx skills add blader/humanizer --global --agent claude-code</code>. Codex: <code>npx skills add blader/humanizer --global --agent codex</code>. Claude.ai / Claude Desktop: download the repo as a ZIP and upload it as a skill in Settings. No API key needed.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Use it</h2>
+      <pre><code>/humanizer
+
+[paste your text here]</code></pre>
+      <p>It shows a first rewrite, a short list of what still sounds artificial, and the final version. Add 2-3 paragraphs of your own writing first and it matches your voice.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> What we measured</h2>
+      <p>We had Claude Sonnet 5.5 write three things from plain prompts, ran <code>/humanizer</code> on each, and counted the tells from Wikipedia's lists and the skill's own list (emoji, "not just X, it's Y", lists of three, AI vocabulary, chatbot phrases, dashes) before and after:</p>
+      <ul>
+        <li>LinkedIn promotion post: <strong>11 → 2</strong> (all 6 emoji gone), 209 → 153 words, 10 s.</li>
+        <li>Cover letter: 4 → 3, 221 → 204 words, 12 s.</li>
+        <li>Email to a manager: 1 → 2 (it added "Let me know", one of Wikipedia's chatbot phrases), 172 → 129 words, 6 s.</li>
+      </ul>
+      <p>Takeaway: it shines on hype-heavy text like LinkedIn posts; plain emails from current models are already fairly clean. It edits for human readers. It does not try to get past AI detectors, and its README says detectors still flag most of its output.</p>
+      <p class="label"><a href="https://github.com/blader/humanizer">github.com/blader/humanizer</a></p>
+    </section>
+    <p class="note">Narration in the reel: Built with Fish Audio.</p>
+  </main>
+</PackLayout>
