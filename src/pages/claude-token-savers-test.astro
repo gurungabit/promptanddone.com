@@ -1,0 +1,46 @@
+---
+// promptanddone.com/claude-token-savers-test: the LEAN pack (DM deliverable for the "claude-token-savers-real-bill" reel). /go/lean redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Do token-saver plugins cut Claude Code's tokens? Our test kit + numbers — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · LEAN</p>
+      <h1>We ran RTK, Caveman and Context Mode on the same Claude Code job</h1>
+      <p class="tag">Same task, same model (Opus 5.5), Claude Code 2.1.330, 3 runs per setup. Every setup averaged more tokens than plain Claude Code. Here are the numbers and the kit to repeat it on your own machine.</p>
+      <p class="note">Tested 20 Nov 2026. One task and a small sample: treat it as one honest data point, not a benchmark.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> The receipt</h2>
+      <table>
+        <thead><tr><th>Setup</th><th>Tokens per run (mean of 3)</th><th>vs plain</th></tr></thead>
+        <tbody>
+          <tr><td>Plain Claude Code</td><td>232,686</td><td>—</td></tr>
+          <tr><td>RTK 1.2.1 (OSS edition, Bash hook)</td><td>298,849</td><td>+28%</td></tr>
+          <tr><td>Caveman 4.1.0 (Claude Code plugin)</td><td>274,378</td><td>+18%</td></tr>
+          <tr><td>Context Mode 2.2.1 (Claude Code plugin)</td><td>290,908</td><td>+25%</td></tr>
+          <tr><td>All three</td><td>286,052</td><td>+23%</td></tr>
+        </tbody>
+      </table>
+      <p>Tokens = everything Claude processed in the run (input, cache writes, cache reads, output). All 15 runs solved the task. Plain runs ranged 192k-259k, so the honest reading is "none of them saved tokens here". In API-equivalent dollars the differences were inside that noise, because whether the prompt prefix was already cached decides a large part of the price.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Why they didn't help on this job</h2>
+      <p>They add text Claude re-reads on every request: the first request grew from 20,791 tokens (plain) to 21,107 (RTK), 21,775 (Context Mode), 24,560 (Caveman) and 25,844 (all three). They added steps: 7.7 turns plain vs 8.7 to 12.7 with a plugin. And the thing they shrink was small: Claude Code already pipes test runs and logs through <code>tail</code> and <code>grep</code>, so command output was only about a tenth of the tokens. RTK's own README says it: "a 90% cut in command output is not a 90% cut in cost."</p>
+      <p>Where they may help: long sessions that dump huge, unfiltered output into the context. Test on your own work before you stack them.</p>
+      <p class="label"><a href="https://github.com/rtk-ai/rtk">github.com/rtk-ai/rtk</a> · <a href="https://github.com/JuliusBrussee/caveman">github.com/JuliusBrussee/caveman</a> · <a href="https://github.com/mksglu/context-mode">github.com/mksglu/context-mode</a> (free, source-available: Elastic License 2.0)</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> The test kit</h2>
+      <div class="btns">
+        <a class="go" href="/downloads/lean-test-kit.zip" download data-umami-event="lean-kit-download">Download lean-test-kit.zip</a>
+      </div>
+      <p>165 KB. Inside: the bench generator (a 610-test invoicing repo with one bad commit), the exact prompt, the sandbox setup that keeps every plugin out of your <code>~/.claude</code>, the run scripts and our raw results for all 15 runs.</p>
+      <pre><code>python3 scripts/make_bench.py bench/pristine
+python3 scripts/setup_arms.py        # after putting rtk / caveman / context-mode in tools/
+scripts/run_round.sh 1               # plain, rtk, caveman, context-mode, all three
+python3 scripts/summarize.py</code></pre>
+      <p>Each run uses your own Claude plan or API usage (about 0.2-0.4 USD API-equivalent per run on Opus).</p>
+    </section>
+  </main>
+</PackLayout>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How a reel gets made · Swimlane</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700;900&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #0b0b0c;
+      --color-ink:     #f2f2f0;
+      --color-muted:   #a3a39d;
+      --color-soft:    #84847e;
+      --color-accent:  #ffb454;
+      --font-sans:     'Chivo', system-ui, sans-serif;
+      --font-title:    'Chivo', system-ui, sans-serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    /* Portrait figure: capped at phone-ish width so it reads the same on desktop. */
+    .frame { max-width: 480px; width: 100%; min-width: 0; }
+    .head { padding: 0 12px; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    h1 {
+      font-family: var(--font-title);
+      font-size: 1.75rem;
+      font-weight: 900;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      color: var(--color-ink);
+      margin-bottom: 0.75rem;
+    }
+
+    svg { width: 100%; min-width: 360px; display: block; }
+
+    @media (max-width: 420px) {
+      body { padding: 1rem 0; align-items: flex-start; }
+      h1 { font-size: 1.5rem; }
+    }
+    @media print {
+      .diagram-container { overflow-x: visible; }
+      svg { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div class="head">
+      <p class="eyebrow">Swimlane · Prompt &amp; Done</p>
+      <h1>How a reel gets made</h1>
+    </div>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 360 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="reel-pipeline-swimlane-title reel-pipeline-swimlane-desc">
+        <title id="reel-pipeline-swimlane-title">How a reel gets made</title>
+        <desc id="reel-pipeline-swimlane-desc">Swimlane of the reel pipeline: the research agent researches, picks a topic and tests the tool, the build agent scripts, voices, builds the 3D world, renders and runs automated QA, and the owner reviews and publishes.</desc>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#a3a39d"/></marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ffb454"/></marker>
+        </defs>
+
+        <rect width="100%" height="100%" fill="#0b0b0c"/>
+
+        <!-- Lane headers -->
+        <text x="68" y="40" fill="#a3a39d" font-size="8" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.18em" text-anchor="middle">RESEARCH AGENT</text>
+        <text x="180" y="40" fill="#a3a39d" font-size="8" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.18em" text-anchor="middle">BUILD AGENT</text>
+        <text x="292" y="40" fill="#a3a39d" font-size="8" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.18em" text-anchor="middle">OWNER</text>
+
+        <!-- Lane dividers -->
+        <line x1="12" y1="52" x2="348" y2="52" stroke="#232324" stroke-width="1"/>
+        <line x1="124" y1="24" x2="124" y2="576" stroke="rgba(242,242,240,0.12)" stroke-width="1"/>
+        <line x1="236" y1="24" x2="236" y2="576" stroke="rgba(242,242,240,0.12)" stroke-width="1"/>
+
+        <!-- Arrows (drawn first, behind nodes) -->
+        <!-- Research agent: research → pick → test -->
+        <line x1="68" y1="120" x2="68" y2="144" stroke="#a3a39d" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="68" y1="192" x2="68" y2="216" stroke="#a3a39d" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <!-- Handoff: test → script -->
+        <line x1="112" y1="240" x2="136" y2="240" stroke="#a3a39d" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <!-- Build agent: script → voice → 3D world → render → QA -->
+        <line x1="180" y1="264" x2="180" y2="288" stroke="#a3a39d" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="180" y1="336" x2="180" y2="360" stroke="#a3a39d" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="180" y1="408" x2="180" y2="432" stroke="#a3a39d" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="180" y1="480" x2="180" y2="504" stroke="#a3a39d" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <!-- Handoff: QA → owner (focal) -->
+        <line x1="224" y1="528" x2="248" y2="528" stroke="#ffb454" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+
+        <!-- Callout in the otherwise empty owner lane -->
+        <text x="248" y="96" fill="#f2f2f0" font-size="14" font-style="italic" font-family="'Instrument Serif', serif">Hands-off</text>
+        <text x="248" y="114" fill="#f2f2f0" font-size="14" font-style="italic" font-family="'Instrument Serif', serif">until the reel</text>
+        <text x="248" y="132" fill="#f2f2f0" font-size="14" font-style="italic" font-family="'Instrument Serif', serif">is finished.</text>
+        <path d="M 292,148 V 500" fill="none" stroke="rgba(242,242,240,0.40)" stroke-width="1" stroke-dasharray="4,3"/>
+        <circle cx="292" cy="500" r="2" fill="#f2f2f0"/>
+
+        <!-- Research agent steps -->
+        <rect x="24" y="72" width="88" height="48" rx="6" fill="#101011" stroke="#f2f2f0" stroke-width="1"/>
+        <text x="68" y="93" fill="#f2f2f0" font-size="12" font-weight="700" font-family="'Chivo', system-ui, sans-serif" text-anchor="middle">Research</text>
+        <text x="68" y="107" fill="#84847e" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">sweep + pitch</text>
+
+        <rect x="24" y="144" width="88" height="48" rx="6" fill="#101011" stroke="#f2f2f0" stroke-width="1"/>
+        <text x="68" y="165" fill="#f2f2f0" font-size="12" font-weight="700" font-family="'Chivo', system-ui, sans-serif" text-anchor="middle">Pick topic</text>
+        <text x="68" y="179" fill="#84847e" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">top-ranked</text>
+
+        <rect x="24" y="216" width="88" height="48" rx="6" fill="#101011" stroke="#f2f2f0" stroke-width="1"/>
+        <text x="68" y="237" fill="#f2f2f0" font-size="12" font-weight="700" font-family="'Chivo', system-ui, sans-serif" text-anchor="middle">Test tool</text>
+        <text x="68" y="251" fill="#84847e" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">hands-on run</text>
+
+        <!-- Build agent steps -->
+        <rect x="136" y="216" width="88" height="48" rx="6" fill="#101011" stroke="#f2f2f0" stroke-width="1"/>
+        <text x="180" y="237" fill="#f2f2f0" font-size="12" font-weight="700" font-family="'Chivo', system-ui, sans-serif" text-anchor="middle">Script</text>
+        <text x="180" y="251" fill="#84847e" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">hook + lines</text>
+
+        <rect x="136" y="288" width="88" height="48" rx="6" fill="#101011" stroke="#f2f2f0" stroke-width="1"/>
+        <text x="180" y="309" fill="#f2f2f0" font-size="12" font-weight="700" font-family="'Chivo', system-ui, sans-serif" text-anchor="middle">Voice-over</text>
+        <text x="180" y="323" fill="#84847e" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">narration</text>
+
+        <rect x="136" y="360" width="88" height="48" rx="6" fill="#101011" stroke="#f2f2f0" stroke-width="1"/>
+        <text x="180" y="381" fill="#f2f2f0" font-size="12" font-weight="700" font-family="'Chivo', system-ui, sans-serif" text-anchor="middle">3D world</text>
+        <text x="180" y="395" fill="#84847e" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">build scene</text>
+
+        <rect x="136" y="432" width="88" height="48" rx="6" fill="#101011" stroke="#f2f2f0" stroke-width="1"/>
+        <text x="180" y="453" fill="#f2f2f0" font-size="12" font-weight="700" font-family="'Chivo', system-ui, sans-serif" text-anchor="middle">Render</text>
+        <text x="180" y="467" fill="#84847e" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">vertical 9:16</text>
+
+        <rect x="136" y="504" width="88" height="48" rx="6" fill="#101011" stroke="#f2f2f0" stroke-width="1"/>
+        <text x="180" y="525" fill="#f2f2f0" font-size="12" font-weight="700" font-family="'Chivo', system-ui, sans-serif" text-anchor="middle">Auto QA</text>
+        <text x="180" y="539" fill="#84847e" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">self-check</text>
+
+        <!-- Owner: review & publish (focal) -->
+        <rect x="248" y="504" width="88" height="64" rx="6" fill="rgba(255,180,84,0.10)" stroke="#ffb454" stroke-width="1"/>
+        <text x="292" y="526" fill="#f2f2f0" font-size="12" font-weight="700" font-family="'Chivo', system-ui, sans-serif" text-anchor="middle">Review &amp;</text>
+        <text x="292" y="541" fill="#f2f2f0" font-size="12" font-weight="700" font-family="'Chivo', system-ui, sans-serif" text-anchor="middle">publish</text>
+        <text x="292" y="556" fill="#a3a39d" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">on your OK</text>
+
+        <!-- Legend -->
+        <line x1="12" y1="592" x2="348" y2="592" stroke="#232324" stroke-width="0.8"/>
+        <rect x="12" y="608" width="24" height="12" rx="2" fill="#101011" stroke="#f2f2f0" stroke-width="1"/>
+        <text x="44" y="618" fill="#a3a39d" font-size="8.5" font-family="'Chivo', system-ui, sans-serif">Step</text>
+
+        <rect x="92" y="608" width="24" height="12" rx="2" fill="rgba(255,180,84,0.10)" stroke="#ffb454" stroke-width="1"/>
+        <text x="124" y="618" fill="#a3a39d" font-size="8.5" font-family="'Chivo', system-ui, sans-serif">Owner gate</text>
+
+        <line x1="196" y1="614" x2="224" y2="614" stroke="#ffb454" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
+        <text x="232" y="618" fill="#a3a39d" font-size="8.5" font-family="'Chivo', system-ui, sans-serif">Final handoff</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>

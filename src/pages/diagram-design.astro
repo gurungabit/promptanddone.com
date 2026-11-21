@@ -1,0 +1,34 @@
+---
+// promptanddone.com/diagram-design: the DIAGRAMS pack (DM deliverable for the "diagram-design-brand-match" reel). /go/diagrams redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="On-brand diagrams from one link (Diagram Design + Claude Code) — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · DIAGRAMS</p>
+      <h1>Diagram Design: point it at your site once, every diagram comes out on brand</h1>
+      <p class="tag">A free (MIT) agent skill that draws diagrams as one self-contained HTML + SVG file. Its onboarding reads your website's colours and fonts and rewrites its style guide, so every diagram after that uses your palette. We pointed it at promptanddone.com: it pulled our exact black (#0b0b0c), amber (#ffb454) and font (Chivo).</p>
+      <p class="note">Tested 20 Nov 2026 on macOS with Claude Code 2.1.329 and diagram-design 2.6.168. 51 diagram types ship in the skill.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install</h2>
+      <p>In Claude Code: <code>/plugin marketplace add cathrynlavery/diagram-design</code> then <code>/plugin install diagram-design@diagram-design</code>. Other agents (Cursor, Codex, Gemini CLI…): <code>npx skills add cathrynlavery/diagram-design</code>. Details in the <a href="https://github.com/cathrynlavery/diagram-design">repo README</a>.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The brand prompt (what we typed)</h2>
+      <pre><code>Onboard diagram-design to https://your-site.com</code></pre>
+      <p>It asks first whether you trust the site (we answered <code>Yes, I trust it. Go ahead.</code>), shows the colours and fonts it found with where each came from, and writes them only after you approve (we answered <code>Approve, with Chivo 900 titles and dark as the default.</code>). It also offers to save a reusable profile in <code>~/.diagram-design/profiles/</code>.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> The two diagrams in the reel</h2>
+      <pre><code>Draw how Claude Code works, as a sequence diagram: from typing a request to the finished change. Make it portrait so it reads full-screen on a phone.</code></pre>
+      <pre><code>Draw our reel pipeline as a swimlane: research, pick a topic, test the tool, write the script, voice it, build the 3D world, render, automated QA, and the owner's review and publish. Lanes: research agent, build agent, owner. Make it portrait so it reads full-screen on a phone.</code></pre>
+      <p>About 2–3 minutes each in our run. Open the files: <a href="/diagram-design/claude-code-sequence.html">How Claude Code works</a> · <a href="/diagram-design/reel-pipeline-swimlane.html">How a reel gets made</a>.</p>
+    </section>
+    <section class="card" aria-labelledby="s4">
+      <h2 id="s4"><span class="n">4</span> Good to know</h2>
+      <p>The skill has no server or telemetry; the diagrams load their fonts from Google Fonts when opened (see its <a href="https://github.com/cathrynlavery/diagram-design/blob/main/PRIVACY.md">privacy policy</a>). Only onboard sites you trust; it fetches the page you give it.</p>
+      <p class="label"><a href="https://github.com/cathrynlavery/diagram-design">github.com/cathrynlavery/diagram-design</a> · MIT · by Cathryn Lavery</p>
+    </section>
+  </main>
+</PackLayout>

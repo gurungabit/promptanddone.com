@@ -1,0 +1,51 @@
+---
+// promptanddone.com/plannotator-plan-review: the MARKUP pack (DM deliverable for the "plannotator-review-claude-plan" reel). /go/markup redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Review Claude Code's plan before it touches your code (Plannotator setup) — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · MARKUP</p>
+      <h1>Mark up Claude Code's plan in your browser before it edits anything</h1>
+      <p class="tag">Plannotator (free, open source, Apache-2.0) hooks into Claude Code's plan mode. When Claude finishes a plan, it opens in a local browser page. Strike out lines, comment on them, and send the markup back; Claude revises and you see a plan diff. In our test Claude's plan would have deleted three duplicate customer rows that printed loyalty cards still use; one strike-out and one comment later, the revised plan kept all 1,284 customers.</p>
+      <p class="note">Tested 20 Nov 2026 on macOS (Apple Silicon): Plannotator 0.29.1, Claude Code 2.1.329, Opus 5.5, in a sandbox demo project with made-up data.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Get the binary (no installer script)</h2>
+      <p>Download the release for your machine from <a href="https://github.com/backnotprop/plannotator/releases">github.com/backnotprop/plannotator/releases</a> and check its SHA-256 against the <code>.sha256</code> file next to it. Apple Silicon:</p>
+      <pre><code>gh release download v0.29.1 -R backnotprop/plannotator -p 'plannotator-darwin-arm64.tar.xz' -p 'plannotator-darwin-arm64.sha256'
+tar -xJf plannotator-darwin-arm64.tar.xz
+shasum -a 256 plannotator-darwin-arm64     # compare with plannotator-darwin-arm64.sha256
+chmod +x plannotator-darwin-arm64 && ./plannotator-darwin-arm64 --version</code></pre>
+      <p>The README also offers a one-line installer and a Claude Code plugin; the installer sets up hooks for every agent it finds. We used only the binary plus one project file, below.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Wire it into one project only</h2>
+      <p>Create <code>.claude/settings.json</code> in the project (put the full path to the binary in <code>command</code>):</p>
+      <pre><code>{'{'}
+  "hooks": {'{'}
+    "PermissionRequest": [
+      {'{'}
+        "matcher": "ExitPlanMode",
+        "hooks": [{'{'} "type": "command", "command": "/full/path/to/plannotator-darwin-arm64", "timeout": 345600 {'}'}]
+      {'}'}
+    ]
+  {'}'},
+  "plansDirectory": "./.claude/plans"
+{'}'}</code></pre>
+      <p>Claude Code asks you to trust the folder because it runs a hook; say yes for this project. <code>plansDirectory</code> keeps plan files inside the project.</p>
+      <p>Optional, what we set for the test: <code>PLANNOTATOR_SHARE=disabled</code> (no share links), <code>DO_NOT_TRACK=1</code> (no anonymous daily usage ping), <code>PLANNOTATOR_DATA_DIR=...</code> (keep its history in a folder you choose).</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Review a plan</h2>
+      <p>Start Claude Code in plan mode in that project (<code>claude --permission-mode plan</code>, or Shift+Tab) and ask for a change. When Claude submits its plan, Plannotator opens it in your browser.</p>
+      <ul>
+        <li><strong>Redline</strong> (the ⌫ tool): select a phrase you want gone.</li>
+        <li><strong>Comment</strong>: select a phrase and say why. The why is the part only you know.</li>
+        <li>Press the send button. Claude gets your markup, revises, and the new version opens with a +/- plan diff. Approve when it's right.</li>
+      </ul>
+      <p>Our comment was: <em>"Don't delete any customer rows. Our printed loyalty cards use these customer numbers. Keep both rows and mark the newer one as merged instead."</em> Claude's revised plan added a <code>merged_into</code> column instead of deleting rows.</p>
+      <p class="label">Plan mode in print mode (<code>claude -p</code>) never submits a plan, so the review page needs an interactive session. It's a review step: it only helps if you read the plan.</p>
+    </section>
+  </main>
+</PackLayout>
