@@ -1111,4 +1111,22 @@ export const tools: Tool[] = [
     event: 'click-tool-lean',
     kind: 'tool',
   },
+  {
+    label: 'REDTEAM: red-team your own app with Claude Code (toy app + the exact prompts)',
+    href: 'https://promptanddone.com/go/redteam/',
+    ariaLabel: 'Get the REDTEAM pack — the deliberately vulnerable toy app, the exact prompt and the optional Claude-BugHunter setup',
+    description: 'A deliberately vulnerable toy app that runs on 127.0.0.1 only, the exact authorized-testing prompt for Claude Code, and how we loaded Claude-BugHunter for one session. Your own apps only. Tested 20 Nov 2026.',
+    external: false,
+    event: 'click-tool-redteam',
+    kind: 'tool',
+  },
+  {
+    label: 'AIRPLANE: run Inkling 2 Mini offline on a Mac (exact setup + the flight sim it wrote)',
+    href: 'https://promptanddone.com/go/airplane/',
+    ariaLabel: 'Get the AIRPLANE pack — the exact install and offline run commands, and the flight simulator it wrote',
+    description: 'Inkling 2 Mini (Thinking Machines, Apache-2.0) with the network blocked: the pinned mlx-lm commit, model id and offline commands we ran, plus the 505-line flight sim (1 prompt + 2 pasted errors). Tested 20 Nov 2026.',
+    external: false,
+    event: 'click-tool-airplane',
+    kind: 'tool',
+  },
 ];

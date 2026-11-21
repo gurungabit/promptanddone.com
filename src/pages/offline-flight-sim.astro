@@ -1,0 +1,44 @@
+---
+// promptanddone.com/offline-flight-sim: the AIRPLANE pack (DM deliverable for the "inkling-2-mini-offline-flight-sim" reel). /go/airplane redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Run Inkling 2 Mini offline on your Mac (the exact setup) — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · AIRPLANE</p>
+      <h1>Inkling 2 Mini, offline on a Mac: the exact setup we ran</h1>
+      <p class="tag">Inkling 2 Mini is Thinking Machines' free open-weight model (Apache-2.0). We blocked its network and asked for a 3D flight simulator in one HTML file. It was not one-shot: <strong>1 prompt + 2 pasted errors, 19 min 26 s of generation, 505 lines</strong>. Here are the exact commands and the file it wrote.</p>
+      <p class="note">Tested 20 Nov 2026 on an Apple M5 Max with 64 GB, macOS 26.7.3. Our peak memory was 18.1–22.6 GB, so plan on about 20 GB free (Thinking Machines lists Apple silicon Macs with 32 GB or more). Mac support needs an <strong>unmerged mlx-lm branch</strong> (pull request #2086, still open on 20 Nov): we pin the exact commit we used. Check whether it has been merged first.</p>
+      <div class="btns">
+        <a class="go" href="/downloads/inkling-offline-kit.zip" download data-umami-event="airplane-kit-download">Download inkling-offline-kit.zip</a>
+      </div>
+      <p class="note">The scripts we ran, the prompt, the sandbox profile, the two errors we pasted back and the finished flight-sim.html.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Install (one folder, nothing global)</h2>
+      <pre><code>mkdir inkling && cd inkling      # unzip the kit in here
+uv venv --python 3.12 .venv
+uv pip install --python .venv/bin/python \
+  "mlx-lm @ git+https://github.com/ml-explore/mlx-lm.git@0c4c99192230f1943dd468d297f0b8a64ae7b7c2" "huggingface_hub[hf_xet]"
+HF_HOME=$PWD/hf .venv/bin/hf download mlx-community/Inkling-2-Mini-4bit</code></pre>
+      <p>The download is about 17 GB and needs internet once, no account. Model id: <code>mlx-community/Inkling-2-Mini-4bit</code> (we got snapshot <code>9856dc5</code>, mlx 0.32.4).</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> Run it with the network blocked</h2>
+      <p><code>nonet.sb</code> is a macOS sandbox profile, <code>(version 1)(allow default)(deny network*)</code>; <code>HF_HUB_OFFLINE=1</code> keeps Hugging Face offline. The scripts check that a connection to 1.1.1.1:443 fails before and after each run.</p>
+      <pre><code>HF_HOME=$PWD/hf HF_HUB_OFFLINE=1 SEED=7 sandbox-exec -f nonet.sb .venv/bin/python run_test.py run2 30000 low</code></pre>
+      <p>Low thinking effort, seed 7, up to 30,000 tokens; the prompt is in <code>prompt.txt</code>. At medium effort our first run spent all 16,000 tokens thinking and never wrote the file.</p>
+      <p>Open <code>run2-flight-sim.html</code> in Chrome with the console open. Ours failed (<code>SyntaxError: Duplicate parameter name</code>), so we pasted the error back:</p>
+      <pre><code>HF_HOME=$PWD/hf HF_HUB_OFFLINE=1 SEED=7 FIX_FROM=run2 sandbox-exec -f nonet.sb .venv/bin/python run_fix.py run4 30000 low</code></pre>
+      <p>That ran but drew nothing (<code>WebGL: INVALID_ENUM: drawElements: invalid type</code>), so we pasted that back too:</p>
+      <pre><code>HF_HOME=$PWD/hf HF_HUB_OFFLINE=1 SEED=7 FIX_FROM=run2:run4 sandbox-exec -f nonet.sb .venv/bin/python run_fix.py run5 30000 low</code></pre>
+      <p>The third file worked: mountains, a lake, sky and fog, a HUD, keyboard flying. 350.4 + 439.9 + 375.6 s = 19 min 26 s, 37,715 tokens. Your errors may differ: write what Chrome shows into <code>runN-error.txt</code> and run the next turn the same way. A second fresh attempt of ours also had a bug, so expect to paste one back.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> Fly the one it wrote</h2>
+      <p><a href="/downloads/inkling-flight-sim.html" download>Download flight-sim.html</a>: one file, no network needed. Open it in a desktop browser: W/S pitch, A/D roll, Q/E yaw, Shift/Ctrl throttle, R restart.</p>
+      <p class="label"><a href="https://thinkingmachines.ai/news/inkling-2-mini">thinkingmachines.ai/news/inkling-2-mini</a> · <a href="https://huggingface.co/thinkingmachines/Inkling-2-Mini">huggingface.co/thinkingmachines/Inkling-2-Mini</a> · <a href="https://github.com/ml-explore/mlx-lm/pull/2086">mlx-lm PR #2086</a></p>
+      <p class="note">Narration in the reel: Built with Fish Audio.</p>
+    </section>
+  </main>
+</PackLayout>

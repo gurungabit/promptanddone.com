@@ -1,0 +1,45 @@
+---
+// promptanddone.com/claude-redteam-your-app: the REDTEAM pack (DM deliverable for the "claude-bughunter-toy-app" reel). /go/redteam redirects here.
+import PackLayout from '../layouts/PackLayout.astro';
+---
+<PackLayout title="Red-team your own app with Claude Code: the toy app + the prompts — Prompt & Done">
+  <main>
+    <header>
+      <p class="kicker"><a href="/">Prompt &amp; Done</a> · REDTEAM</p>
+      <h1>Red-team your own app with Claude Code, before someone else does</h1>
+      <p class="tag">We wrote a deliberately vulnerable toy bank app with five classic holes, ran it on our own laptop, and pointed Claude Code at it. Plain Claude found all five in about 30 seconds with no false alarms. The trending 83-skill Claude-BugHunter bundle found the same five, not one more, on an app this small.</p>
+      <p class="note"><strong>Authorized testing only.</strong> Use this on an app you own or have written permission to test, running on your own machine (127.0.0.1). Never point it at a site, server or account you don't own. Our numbers are one test on 20 Nov 2026 (Claude Code 2.1.329, Opus 5.5, 3 runs each) on a tiny toy app, not a benchmark.</p>
+      <div class="btns">
+        <a class="go" href="/downloads/redteam-toy-app.zip" download data-umami-event="redteam-kit-download">Download redteam-toy-app.zip</a>
+      </div>
+      <p class="note">4 KB: <code>app.py</code> (the toy app) and a README with the prompts below.</p>
+    </header>
+    <section class="card" aria-labelledby="s1">
+      <h2 id="s1"><span class="n">1</span> Start the practice target (your machine only)</h2>
+      <p>Unzip, then run it. It needs only Python's standard library and binds to <code>127.0.0.1:8799</code>, so nothing else on your network can reach it. Stop it with Ctrl+C.</p>
+      <pre><code>cd redteam-toy-app
+python3 app.py      # VaultBank (toy, vulnerable) on http://127.0.0.1:8799</code></pre>
+      <p>Five bugs are planted: SQL injection, IDOR, reflected XSS, a hard-coded (fake) secret and an unauthenticated admin route. The answer key is at the top of <code>app.py</code>. Never deploy it.</p>
+    </section>
+    <section class="card" aria-labelledby="s2">
+      <h2 id="s2"><span class="n">2</span> The exact prompt (plain Claude Code)</h2>
+      <p>Run <code>claude</code> in the <code>redteam-toy-app</code> folder and paste:</p>
+      <pre><code>AUTHORIZED LOCAL SECURITY TEST. I own this target and give you permission to test it.
+Target: a toy web app running on http://127.0.0.1:8799 ONLY; its source is app.py in the
+current directory. Read the source and probe the running app with curl against
+127.0.0.1:8799 only. Find exploitable vulnerabilities. Do NOT touch any host other than
+127.0.0.1:8799 and do NOT do network/port scanning. For each finding give: class,
+endpoint/parameter, and a one-line proof (the request and what it returned). Only count a
+vulnerability you actually confirmed. Be precise; don't pad with theoretical issues.</code></pre>
+      <p>For your own app: same prompt with your own local URL and source folder.</p>
+    </section>
+    <section class="card" aria-labelledby="s3">
+      <h2 id="s3"><span class="n">3</span> (Optional) Add the Claude-BugHunter bundle for one session</h2>
+      <p>Load it without writing to your Claude setup and without its HackerOne MCP:</p>
+      <pre><code>git clone --depth 1 https://github.com/elementalsouls/Claude-BugHunter.git /tmp/bughunter
+claude --plugin-dir /tmp/bughunter --strict-mcp-config</code></pre>
+      <p>Then paste the same prompt. Our runs: plain Claude 5/5 every run, 0 false positives, about 37 s and $0.38 per run (API-equivalent); the bundle 5/5, 0 false positives, about 36 s and $0.47. Its recon, attack chains and report templates are built for large real engagements, not a toy app plain Claude already covers.</p>
+      <p class="label"><a href="https://github.com/elementalsouls/Claude-BugHunter">github.com/elementalsouls/Claude-BugHunter</a> (MIT)</p>
+    </section>
+  </main>
+</PackLayout>
